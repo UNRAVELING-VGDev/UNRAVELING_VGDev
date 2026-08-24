@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerGaze : MonoBehaviour
 {
     public GameObject teacher;
+    public Camera playerCamera;
 
     Ray ray;
     float maxDistance = 100f;
