@@ -5,6 +5,7 @@ using System.Collections;
 public class TeacherState : MonoBehaviour
 {
     public float turnSpeed = 50f;
+    public bool isFacingBoard = true;
 
     void Start()
     {
@@ -32,6 +33,7 @@ public class TeacherState : MonoBehaviour
 
                 yield return null;
             }
+            isFacingBoard = false;
 
             // Wait 3 seconds while facing the board
             yield return new WaitForSeconds(Random.Range(2f, 6f));
@@ -50,6 +52,7 @@ public class TeacherState : MonoBehaviour
 
                 yield return null;
             }
+            isFacingBoard = true;
         }
     }
 }
