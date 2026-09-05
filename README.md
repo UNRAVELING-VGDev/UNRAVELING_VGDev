@@ -1,6 +1,6 @@
 # Unraveling
 
-A 3D psychological horror game built in Unity exploring social anxiety and sensory overload in a classroom setting.
+A 3D psychological horror game built in Unity exploring internal anxiety and sensory overload in a school setting.
 
 ## Installation
 
@@ -48,3 +48,8 @@ Comment Code: Document non-obvious logic and state transitions.
 Branching: Do not commit directly to main. Create feature branches (feature/your-feature).
 
 PR Approvals: Have a sublead code review before merging into main.
+
+## Task Management
+Check Tasks under Projects for updates on To-dos, your tasks, and whwat others are working on.
+
+Filter by assigned or label (Different types of tasks ex. Programming, 2D Concept Art...)
