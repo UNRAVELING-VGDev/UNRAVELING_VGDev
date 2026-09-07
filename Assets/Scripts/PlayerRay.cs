@@ -1,11 +1,12 @@
 using UnityEngine;
 
-public class PlayerRay: MonoBehaviour
+public class PlayerRay : MonoBehaviour
 {
+    public SuspicionMeter suspicion;
     public GameObject teacher;
     public Camera playerCamera;
     public TeacherState teacherState;
-    public float paranoiaLevel = 0f;
+
     public float paranoiaIncreaseRate = 20f;
     public float paranoiaDecreaseRate = 10f;
 
@@ -22,37 +23,17 @@ public class PlayerRay: MonoBehaviour
     {
         RaycastHit hit;
 
+        bool lookingAtTeacher = false;
+
         if (Physics.Raycast(ray, out hit, maxDistance))
         {
             if (hit.collider.gameObject == teacher && !teacherState.isFacingBoard)
-            {
-                Debug.Log("HIT THE TEACHER!");
-                paranoiaLevel += paranoiaIncreaseRate * Time.deltaTime;
-                paranoiaLevel = Mathf.Clamp(paranoiaLevel, 0f, 100f);
-                Debug.Log("Paranoia: " + paranoiaLevel);
-            }
+                lookingAtTeacher = true;
         }
-    }
-    void CheckSuspicionLevel(){
-        if (paranoiaLevel >= 90f)
-        {
-          Debug.Log("GAME OVER");
-        }
-        else if (paranoiaLevel >= 70f)
-        {
-            Debug.Log("SUSPICION LEVEL 3");
-        }
-        else if (paranoiaLevel >= 40f)
-        {
-            Debug.Log("SUSPICION LEVEL 2");
-        }
-        else if (paranoiaLevel >= 20f)
-        {
-            Debug.Log("SUSPICION LEVEL 1");
-        }
+
+        if (lookingAtTeacher)
+            suspicion.Add(paranoiaIncreaseRate * Time.deltaTime);
         else
-        {
-            Debug.Log("NORMAL");
-        }
+            suspicion.Add(-paranoiaDecreaseRate * Time.deltaTime);
     }
 }

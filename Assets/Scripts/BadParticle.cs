@@ -2,44 +2,109 @@ using UnityEngine;
 
 public class BadParticle : MonoBehaviour
 {
-    [Header("Bounds")]
+    //bounds
     public BoxCollider roomBounds;
     public float padding = 0.5f;
 
-    [Header("Drifting")]
+    //drifting
     public float smoothTime = 1.5f;
     public float arriveDistance = 0.4f;
 
-    [Header("Bobbing")]
+    //bobbing
     public float floatSpeed = 0.5f;
     public float floatHeight = 0.12f;
+
+    //attacking
+    public float attackSpeed = 2f;
+    public float acceleration = 6f;
+    public float maxAttackSpeed = 12f;
+    public float attackDistance = 0.5f;
+    public float hitRadius = 0.4f;
+    public bool isHit = false;
+
+    public Transform playerHead;
+
+    private float currentSpeed;
 
     private Vector3 driftPos;
     private Vector3 targetPosition;
     private Vector3 velocity;
     private float bobOffset;
+    //public boolean playerIsHit = false; 
+
+    //paranoia increase
+    public SuspicionMeter suspicion;
+    public float paranoiaIncrease = 20f;
+
+    private Transform attackTarget;   // null = just drifting
 
     void Start()
     {
         driftPos = transform.position;
-        bobOffset = Random.Range(0f, Mathf.PI * 1.2f);
+        bobOffset = Random.Range(0f, Mathf.PI * 2f);
 
         PickNewTargetPosition();
     }
 
+    /// Called by BadParticleManager when this one is chosen.
+    public void Attack(Transform target)
+    {
+        attackTarget = target;
+        currentSpeed = attackSpeed;
+    }
+
     void Update()
     {
-        // drift toward the target, easing in and out
+        if (attackTarget != null)
+            FlyAtTarget();
+        else
+            Drift();
+    }
+    void FlyAtTarget()
+    {
+        currentSpeed += acceleration * Time.deltaTime;
+        currentSpeed = Mathf.Min(currentSpeed, maxAttackSpeed);
+
+        transform.position = Vector3.MoveTowards(
+            transform.position,
+            attackTarget.position,
+            currentSpeed * Time.deltaTime
+        );
+
+        if (Vector3.Distance(transform.position, attackTarget.position) <= attackDistance)
+        {
+            isHit = Vector3.Distance(
+                transform.position,
+                playerHead.position
+            ) <= hitRadius;
+
+            if (isHit)
+            {
+                Debug.Log("HIT");
+
+                if (suspicion != null)
+                {
+                    suspicion.Add(paranoiaIncrease);
+                }
+            }
+            else
+            {
+                Debug.Log("DODGED");
+            }
+
+            Destroy(gameObject);
+        }
+    }
+
+    void Drift()
+    {
         driftPos = Vector3.SmoothDamp(driftPos, targetPosition, ref velocity, smoothTime);
 
-        // bob is added on top, so it never affects the arrival check
         float bob = Mathf.Sin(Time.time * floatSpeed + bobOffset) * floatHeight;
         transform.position = driftPos + Vector3.up * bob;
 
         if (Vector3.Distance(driftPos, targetPosition) < arriveDistance)
-        {
             PickNewTargetPosition();
-        }
     }
 
     void PickNewTargetPosition()
@@ -59,7 +124,6 @@ public class BadParticle : MonoBehaviour
         );
     }
 
-    // shows where it's currently headed, handy while tuning
     void OnDrawGizmosSelected()
     {
         if (!Application.isPlaying) return;
@@ -69,4 +133,3 @@ public class BadParticle : MonoBehaviour
         Gizmos.DrawWireSphere(targetPosition, 0.15f);
     }
 }
-
