@@ -26,6 +26,7 @@ public class ParanoiaMeter : MonoBehaviour
     public void Add(float amount)
     {
         paranoiaLevel = Mathf.Clamp(paranoiaLevel + amount, 0f, maxParanoia);
+        ParanoiaVFXFeature.SetTension(paranoiaLevel / maxParanoia);
     }
 
     void Update()
