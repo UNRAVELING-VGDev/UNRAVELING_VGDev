@@ -30,10 +30,9 @@ public class BadParticle : MonoBehaviour
     private Vector3 targetPosition;
     private Vector3 velocity;
     private float bobOffset;
-    //public boolean playerIsHit = false; 
 
     //paranoia increase
-    public SuspicionMeter suspicion;
+    public ParanoiaMeter paranoia;
     public float paranoiaIncrease = 20f;
 
     private Transform attackTarget;   // null = just drifting
@@ -60,6 +59,7 @@ public class BadParticle : MonoBehaviour
         else
             Drift();
     }
+
     void FlyAtTarget()
     {
         currentSpeed += acceleration * Time.deltaTime;
@@ -82,9 +82,9 @@ public class BadParticle : MonoBehaviour
             {
                 Debug.Log("HIT");
 
-                if (suspicion != null)
+                if (paranoia != null)
                 {
-                    suspicion.Add(paranoiaIncrease);
+                    paranoia.Add(paranoiaIncrease);
                 }
             }
             else

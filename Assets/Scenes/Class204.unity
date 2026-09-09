@@ -1850,6 +1850,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLook
   mouseSensitivity: 400
   cameraTransform: {fileID: 330585546}
+  pitchLimit: 90
+  yawLimit: 70
 --- !u!114 &1514480551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1886,7 +1888,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ebb8f4dd12894200baa8c50c15b332a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerGaze
-  suspicion: {fileID: 1514480553}
+  paranoia: {fileID: 1514480553}
   teacher: {fileID: 2057058721}
   playerCamera: {fileID: 330585545}
   teacherState: {fileID: 2057058723}
@@ -1906,6 +1908,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SuspicionMeter
   paranoiaLevel: 0
   maxParanoia: 200
+  stageThresholds:
+  - 0.25
+  - 0.5
+  - 0.75
+  - 1
+  hysteresis: 15
   logInterval: 3
   paranoiaText: {fileID: 763435374}
 --- !u!1 &1530475373
@@ -2447,7 +2455,7 @@ MonoBehaviour:
   hitRadius: 0.4
   isHit: 0
   playerHead: {fileID: 130464646}
-  suspicion: {fileID: 0}
+  paranoia: {fileID: 0}
   paranoiaIncrease: 20
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

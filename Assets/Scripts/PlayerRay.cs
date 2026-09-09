@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerRay : MonoBehaviour
 {
-    public SuspicionMeter suspicion;
+    public ParanoiaMeter paranoia;
     public GameObject teacher;
     public Camera playerCamera;
     public TeacherState teacherState;
@@ -32,8 +32,8 @@ public class PlayerRay : MonoBehaviour
         }
 
         if (lookingAtTeacher)
-            suspicion.Add(paranoiaIncreaseRate * Time.deltaTime);
+            paranoia.Add(paranoiaIncreaseRate * Time.deltaTime);
         else
-            suspicion.Add(-paranoiaDecreaseRate * Time.deltaTime);
+            paranoia.Add(-paranoiaDecreaseRate * Time.deltaTime);
     }
 }
