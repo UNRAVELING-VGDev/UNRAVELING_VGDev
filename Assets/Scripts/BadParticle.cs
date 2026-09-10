@@ -15,16 +15,11 @@ public class BadParticle : MonoBehaviour
     public float floatHeight = 0.12f;
 
     //attacking
-    public float attackSpeed = 2f;
-    public float acceleration = 6f;
-    public float maxAttackSpeed = 12f;
     public float attackDistance = 0.5f;
     public float hitRadius = 0.4f;
     public bool isHit = false;
 
     public Transform playerHead;
-
-    private float currentSpeed;
 
     private Vector3 driftPos;
     private Vector3 targetPosition;
@@ -35,21 +30,34 @@ public class BadParticle : MonoBehaviour
     public ParanoiaMeter paranoia;
     public float paranoiaIncrease = 20f;
 
-    private Transform attackTarget;   // null = just drifting
+    //attack movement (the plugged-in variant: Diver / Weaver)
+    private IAttackMovement movement;
+    private Vector3 attackStart;      // where the attack launched from
+    private Vector3 attackPoint;      // the LOCKED target - does not move
+    private float attackTime;         // how long we've been attacking
+
+    private Transform attackTarget;   // null = just drifting (still the "am I attacking" flag)
+
+    //manager reads to know if attack is done
+    public bool IsAttacking => attackTarget != null;
 
     void Start()
     {
         driftPos = transform.position;
         bobOffset = Random.Range(0f, Mathf.PI * 2f);
 
+        movement = GetComponent<IAttackMovement>();   // grab whichever variant is attached
+
         PickNewTargetPosition();
     }
 
-    /// Called by BadParticleManager when this one is chosen.
+    //Called by BadParticleManager when this one is chosen
     public void Attack(Transform target)
     {
-        attackTarget = target;
-        currentSpeed = attackSpeed;
+        attackStart = transform.position;   // where we launched from
+        attackPoint = target.position;      // lock the target NOW (this is the dodge fix)
+        attackTime = 0f;
+        attackTarget = target;              // flag: we're attacking
     }
 
     void Update()
@@ -62,21 +70,16 @@ public class BadParticle : MonoBehaviour
 
     void FlyAtTarget()
     {
-        currentSpeed += acceleration * Time.deltaTime;
-        currentSpeed = Mathf.Min(currentSpeed, maxAttackSpeed);
+        attackTime += Time.deltaTime;
 
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            attackTarget.position,
-            currentSpeed * Time.deltaTime
-        );
+        // ask the plugged-in variant where we should be
+        transform.position = movement.GetPosition(attackStart, attackPoint, attackTime);
 
-        if (Vector3.Distance(transform.position, attackTarget.position) <= attackDistance)
+        // reached the locked target point?
+        if (Vector3.Distance(transform.position, attackPoint) <= attackDistance)
         {
-            isHit = Vector3.Distance(
-                transform.position,
-                playerHead.position
-            ) <= hitRadius;
+            // hit test against the player's ACTUAL head (they may have leaned away)
+            isHit = Vector3.Distance(transform.position, playerHead.position) <= hitRadius;
 
             if (isHit)
             {
@@ -91,9 +94,16 @@ public class BadParticle : MonoBehaviour
             {
                 Debug.Log("DODGED");
             }
-
-            Destroy(gameObject);
+            StopAttacking();
         }
+    }
+
+    void StopAttacking()
+    {
+        attackTarget = null;
+        driftPos = transform.position;
+        velocity = Vector3.zero;
+        PickNewTargetPosition();
     }
 
     void Drift()
