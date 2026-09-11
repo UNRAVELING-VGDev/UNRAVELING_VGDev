@@ -30,6 +30,8 @@ public class BadParticle : MonoBehaviour
     private Vector3 targetPosition;
     private Vector3 velocity;
     private float bobOffset;
+    public float attackOffsetRange = 0.5f;
+    private Vector3 attackOffset;
 
     //paranoia increase
     public ParanoiaMeter paranoia;
@@ -50,6 +52,12 @@ public class BadParticle : MonoBehaviour
     {
         attackTarget = target;
         currentSpeed = attackSpeed;
+
+        attackOffset = new Vector3(
+            Random.Range(-attackOffsetRange, attackOffsetRange),
+            Random.Range(-attackOffsetRange, attackOffsetRange),
+            Random.Range(-attackOffsetRange, attackOffsetRange)
+        );
     }
 
     void Update()
@@ -67,7 +75,7 @@ public class BadParticle : MonoBehaviour
 
         transform.position = Vector3.MoveTowards(
             transform.position,
-            attackTarget.position,
+            attackTarget.position + attackOffset,
             currentSpeed * Time.deltaTime
         );
 

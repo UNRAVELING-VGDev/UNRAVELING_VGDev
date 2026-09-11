@@ -180,7 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2dede3d9e9a348c3b6b0a3e16eba74c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BadParticleManager
-  playerHead: {fileID: 130464646}
+  playerHead: {fileID: 330585546}
   teacher: {fileID: 2057058723}
   minAttackDelay: 3
   maxAttackDelay: 8
@@ -1908,13 +1908,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SuspicionMeter
   paranoiaLevel: 0
   maxParanoia: 200
-  stageThresholds:
-  - 0.25
-  - 0.5
-  - 0.75
-  - 1
-  hysteresis: 15
-  logInterval: 3
   paranoiaText: {fileID: 763435374}
 --- !u!1 &1530475373
 GameObject:
@@ -2454,7 +2447,8 @@ MonoBehaviour:
   attackDistance: 0.5
   hitRadius: 0.4
   isHit: 0
-  playerHead: {fileID: 130464646}
+  playerHead: {fileID: 330585546}
+  attackOffsetRange: 0.5
   paranoia: {fileID: 0}
   paranoiaIncrease: 20
 --- !u!1660057539 &9223372036854775807
