@@ -12,15 +12,15 @@ using TMPro;
 /// VFX scripts read `Normalized` (0 to 1) every frame to scale their effects.
 public class ParanoiaMeter : MonoBehaviour
 {
-    public float paranoiaLevel = 0f;
+    public float paranoiaLevel;
     public float maxParanoia = 200f;
 
     public TextMeshProUGUI paranoiaText;   // optional debug readout
 
-    // 0 to 1, for effect scripts that want to scale smoothly with paranoia.
+    // 0 to 1 for effect scripts to scale smoothly with paranoia
     public float Normalized => paranoiaLevel / maxParanoia;
 
-    // True once paranoia is maxed. The lose/faint system watches this.
+    // True once paranoia is maxed. The lose/faint should read this
     public bool IsMaxed => paranoiaLevel >= maxParanoia;
 
     public void Add(float amount)
