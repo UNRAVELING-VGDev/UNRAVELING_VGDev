@@ -180,9 +180,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2dede3d9e9a348c3b6b0a3e16eba74c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BadParticleManager
-  playerHead: {fileID: 330585546}
   particlePrefab: {fileID: 2126225429}
-  playerHead: {fileID: 130464646}
+  playerHead: {fileID: 330585546}
   teacher: {fileID: 2057058723}
   roomBounds: {fileID: 428869482}
   particleCount: 4
@@ -199,6 +198,59 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.04573, y: 1.95463, z: 4.85404}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &84534020
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 84534022}
+  - component: {fileID: 84534021}
+  m_Layer: 0
+  m_Name: LoseState
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &84534021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84534020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ffd643893cec074b97ec8e923afcb7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LoseState
+  resetSpeed: 2
+  paranoia: {fileID: 0}
+  cam: {fileID: 0}
+  look: {fileID: 0}
+  lean: {fileID: 0}
+  gaze: {fileID: 0}
+  clock: {fileID: 0}
+  teacher: {fileID: 0}
+  particles: {fileID: 0}
+--- !u!4 &84534022
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84534020}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2256,3 +2308,4 @@ SceneRoots:
   - {fileID: 126060210}
   - {fileID: 864945156}
   - {fileID: 984068095}
+  - {fileID: 84534022}
