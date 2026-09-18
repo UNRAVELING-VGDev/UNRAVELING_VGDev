@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{bf4329b9-89f4-458b-8647-d3d25bb694ee}">
 		<property name="name">
-			<value>SFX - Teacher Stare Loop</value>
+			<value>Teacher Stare Loop</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
@@ -64,7 +64,7 @@
 			<destination>{2ab4d84a-6f51-4f39-b084-6b2b77318f9b}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{65287cc6-ef5f-4755-b96f-e29cb0561e3e}</destination>
+			<destination>{e85a2f41-8d79-4dea-894b-3788fb8824e9}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{48ee0068-19d5-47b2-89cd-e77c93dec5ba}" />

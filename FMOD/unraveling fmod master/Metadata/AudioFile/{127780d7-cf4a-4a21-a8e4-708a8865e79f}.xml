@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{127780d7-cf4a-4a21-a8e4-708a8865e79f}">
+		<property name="assetPath">
+			<value>Mus_Level1_Class204_Layer2_Bass_85bpm_Lp.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>122.82352083333333</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{452fed86-8660-49e0-9ce8-fd11bc600b12}</destination>
+		</relationship>
+	</object>
+</objects>
