@@ -1026,6 +1026,8 @@ MonoBehaviour:
   - {fileID: 873873533}
   stretchPerStage: 5
   stretchSpeed: 0.5
+  wallsToStretch: []
+  proportionalObjectsStretch: []
 --- !u!4 &624319156
 Transform:
   m_ObjectHideFlags: 0
@@ -2319,6 +2321,61 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1530475373}
   m_CullTransparentMesh: 1
+--- !u!1 &1548944468
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1548944470}
+  - component: {fileID: 1548944469}
+  m_Layer: 0
+  m_Name: LoseState
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1548944469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548944468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ffd643893cec074b97ec8e923afcb7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LoseState
+  IsOver: 0
+  resetSpeed: 2
+  paranoia: {fileID: 0}
+  cam: {fileID: 0}
+  look: {fileID: 0}
+  lean: {fileID: 0}
+  gaze: {fileID: 0}
+  clock: {fileID: 0}
+  teacher: {fileID: 0}
+  particles: {fileID: 0}
+  healing: {fileID: 0}
+--- !u!4 &1548944470
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548944468}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.61344, y: 1.35916, z: 4.33168}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1598866210 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8494251016116736709, guid: 85ea9babcbe5a4ccab95dd66001f2db5, type: 3}
@@ -2937,7 +2994,6 @@ SceneRoots:
   - {fileID: 806361943}
   - {fileID: 428869481}
   - {fileID: 374072867}
-  - {fileID: 1117998825}
   - {fileID: 907193417}
   - {fileID: 1204223023}
   - {fileID: 130464646}
@@ -2947,3 +3003,4 @@ SceneRoots:
   - {fileID: 864945156}
   - {fileID: 984068095}
   - {fileID: 624319156}
+  - {fileID: 1548944470}
