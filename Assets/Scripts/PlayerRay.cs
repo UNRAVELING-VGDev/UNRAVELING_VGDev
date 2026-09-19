@@ -8,10 +8,9 @@ public class PlayerRay : MonoBehaviour
     public TeacherState teacherState;
 
     public float paranoiaIncreaseRate = 20f;
-    public float paranoiaDecreaseRate = 10f;
 
     Ray ray;
-    float maxDistance = 100f;
+    float maxDistance = 500f; 
 
     void Update()
     {
@@ -25,15 +24,18 @@ public class PlayerRay : MonoBehaviour
 
         bool lookingAtTeacher = false;
 
-        if (Physics.Raycast(ray, out hit, maxDistance))
+        if (Physics.Raycast(ray, out hit, maxDistance, ~0, QueryTriggerInteraction.Ignore))
         {
-            if (hit.collider.gameObject == teacher && !teacherState.isFacingBoard)
+            Debug.Log("ray hit: " + hit.collider.gameObject.name);
+            if (hit.collider.transform.IsChildOf(teacher.transform) && teacherState.isFacingPlayer)
                 lookingAtTeacher = true;
+        }
+        else
+        {
+            Debug.Log("ray hit NOTHING");
         }
 
         if (lookingAtTeacher)
             paranoia.Add(paranoiaIncreaseRate * Time.deltaTime);
-        else
-            paranoia.Add(-paranoiaDecreaseRate * Time.deltaTime);
     }
 }
