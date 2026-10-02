@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="ParameterPreset" id="{f091c87f-0fe7-4f63-89e2-867886278104}">
 		<property name="name">
-			<value>Teacher Stare End Trigger</value>
+			<value>Teacher Stare End</value>
 		</property>
 		<relationship name="folder">
 			<destination>{8ed6ad23-0d0f-4c17-add2-51b9f41f25ac}</destination>

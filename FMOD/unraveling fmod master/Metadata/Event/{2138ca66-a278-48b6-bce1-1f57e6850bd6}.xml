@@ -5,7 +5,7 @@
 			<value>Chalk Writing</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{30c104b7-18b6-4221-8fb3-988ed3d58d79}</destination>
@@ -95,9 +95,6 @@
 		<property name="length">
 			<value>10.5</value>
 		</property>
-		<property name="looping">
-			<value>true</value>
-		</property>
 		<relationship name="modulators">
 			<destination>{59ddd0b4-3a06-43ac-9575-42b42b7f9933}</destination>
 			<destination>{7b5dee23-e29a-4ccf-9972-15efe56fa8c2}</destination>
@@ -130,6 +127,7 @@
 		<relationship name="effects">
 			<destination>{bb6bc2f1-7047-4e00-8095-0055c27ade33}</destination>
 			<destination>{42a92afe-e359-4105-8d69-fee56f7c47c7}</destination>
+			<destination>{1d96c5c0-74e1-4dff-a4e9-8d2b3474fa8f}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{6ca3ee10-6ac8-45ca-9de8-1069f050d114}" />
@@ -209,5 +207,6 @@
 			<value>8.15522099</value>
 		</property>
 	</object>
+	<object class="SpatialiserEffect" id="{1d96c5c0-74e1-4dff-a4e9-8d2b3474fa8f}" />
 	<object class="MixerBusFader" id="{da71daaf-9884-4d14-b2ad-d290cd630681}" />
 </objects>
