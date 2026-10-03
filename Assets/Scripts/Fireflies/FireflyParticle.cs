@@ -172,7 +172,7 @@ public class FireflyParticle : MonoBehaviour
     // }
   }
 
-  private void Despawn()
+  public void Despawn()
   {
     if (_released)
       return;
