@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{b9cfb097-f9a2-4df9-8fa1-0c20ed828340}">
+		<property name="name">
+			<value>Level 01 Suspicion Intensity</value>
+		</property>
+		<relationship name="folder">
+			<destination>{8ed6ad23-0d0f-4c17-add2-51b9f41f25ac}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{46d241ed-ebdb-4076-bb1d-a5ef966b1ee2}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{46d241ed-ebdb-4076-bb1d-a5ef966b1ee2}">
+		<property name="parameterType">
+			<value>1</value>
+		</property>
+		<property name="maximum">
+			<value>5</value>
+		</property>
+		<property name="isGlobal">
+			<value>true</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="isExposedRecursively">
+			<value>false</value>
+		</property>
+	</object>
+</objects>

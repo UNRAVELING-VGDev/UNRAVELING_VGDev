@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{70634993-e7a5-44c5-bf19-3940ae9427dc}">
+		<property name="name">
+			<value>Teacher Stare Level</value>
+		</property>
+		<relationship name="folder">
+			<destination>{8ed6ad23-0d0f-4c17-add2-51b9f41f25ac}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{4841492d-b4d8-4693-a43f-6b6afbbfb6c1}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{4841492d-b4d8-4693-a43f-6b6afbbfb6c1}">
+		<property name="isGlobal">
+			<value>true</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="isExposedRecursively">
+			<value>false</value>
+		</property>
+	</object>
+</objects>

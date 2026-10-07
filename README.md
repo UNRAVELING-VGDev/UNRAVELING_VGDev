@@ -4,7 +4,7 @@ A 3D psychological horror game built in Unity exploring internal anxiety and sen
 
 ## Installation
 
-1. **Clone the repository locally**
+1. **Clone the repository locally (make sure it's your own fork)**
    ```bash
    git clone git@github.com:hongbian/UNRAVELING_VGDev.git
 

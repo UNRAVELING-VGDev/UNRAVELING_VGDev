@@ -13,6 +13,8 @@ public class LevelClock : MonoBehaviour
     [SerializeField] float stage3Duration;
     [SerializeField] float staredownDuration;
 
+    private float staredownStartTime;
+
     void Start()
     {
         stage = 1;
@@ -39,12 +41,21 @@ public class LevelClock : MonoBehaviour
             stage = 4;
             onStageChange?.Invoke(stage);
             Debug.Log("stage is " + stage);
+            staredownStartTime = Time.timeSinceLevelLoad;
         }
         if (stage < 5 && Time.timeSinceLevelLoad >= stage1Duration + stage2Duration + stage3Duration + staredownDuration)
         {
             stage = 5;
             onStageChange?.Invoke(5);
             Debug.Log("stage is " + stage);
+
+            AudioManager.instance.triggerEnd("Teacher Stare"); // End?
+            AudioManager.instance.triggerEnd("Level 01 Music");
+        }
+
+        if (stage == 4)
+        {
+            AudioManager.instance.setGlobalParameter("Teacher Stare Level", (Time.timeSinceLevelLoad - staredownStartTime) / staredownDuration);
         }
     }
 }
