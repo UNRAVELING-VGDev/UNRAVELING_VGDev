@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuButtons : MonoBehaviour
 {
-    [SerializeField] private GameObject settingsPanel;
+    [SerializeField] private GameObject settingsCanvas;
 
     public void Play()
     {
@@ -12,16 +12,17 @@ public class MenuButtons : MonoBehaviour
 
     public void OpenSettings()
     {
-        settingsPanel.SetActive(true);
+        settingsCanvas.SetActive(true);
     }
 
     public void CloseSettings()
     {
-        settingsPanel.SetActive(false);
+        settingsCanvas.SetActive(false);
     }
 
     public void Quit()
     {
+        Debug.Log("Quit button pressed.");
         Application.Quit();
     }
 }
