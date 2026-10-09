@@ -3,21 +3,37 @@ using UnityEngine.SceneManagement;
 
 public class MenuButtons : MonoBehaviour
 {
-    [SerializeField] private GameObject settingsCanvas;
+    [SerializeField] private GameObject mainPanel;
+    [SerializeField] private GameObject settingsPanel;
+    [SerializeField] private GameObject levelsPanel;
+    private GameObject currentPanel;
 
-    public void Play()
+    public void Start()
+    {
+        currentPanel = mainPanel;
+    }
+
+    public void PlayLevel1()
     {
         SceneManager.LoadScene("Class204");
     }
 
-    public void OpenSettings()
+    public void PlayLevel2()
     {
-        settingsCanvas.SetActive(true);
+        SceneManager.LoadScene("HallwayP1");
     }
 
-    public void CloseSettings()
+    public void ShowPanel(GameObject panel)
     {
-        settingsCanvas.SetActive(false);
+        mainPanel.SetActive(false);
+        panel.SetActive(true);
+        currentPanel = panel;
+    }
+
+    public void BackToMenu()
+    {
+        currentPanel.SetActive(false);
+        mainPanel.SetActive(true);
     }
 
     public void Quit()
