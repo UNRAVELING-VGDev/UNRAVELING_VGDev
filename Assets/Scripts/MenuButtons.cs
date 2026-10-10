@@ -4,8 +4,6 @@ using UnityEngine.SceneManagement;
 public class MenuButtons : MonoBehaviour
 {
     [SerializeField] private GameObject mainPanel;
-    [SerializeField] private GameObject settingsPanel;
-    [SerializeField] private GameObject levelsPanel;
     private GameObject currentPanel;
 
     public void Start()
@@ -25,15 +23,9 @@ public class MenuButtons : MonoBehaviour
 
     public void ShowPanel(GameObject panel)
     {
-        mainPanel.SetActive(false);
+        currentPanel.SetActive(false);
         panel.SetActive(true);
         currentPanel = panel;
-    }
-
-    public void BackToMenu()
-    {
-        currentPanel.SetActive(false);
-        mainPanel.SetActive(true);
     }
 
     public void Quit()
