@@ -163,10 +163,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e8bfc1543c384408bc1731405ca80c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Minigame1
-  duration: 30
-  speed: 15
-  dashDistance: 20
-  delay: 1
+  duration: 0
+  speed: 0
+  dashDistance: 0
+  delay: 0
+  escalationvar: 0.05
 --- !u!1 &830916196
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,6 +180,8 @@ GameObject:
   - component: {fileID: 830916199}
   - component: {fileID: 830916198}
   - component: {fileID: 830916197}
+  - component: {fileID: 830916202}
+  - component: {fileID: 830916201}
   m_Layer: 0
   m_Name: Player
   m_TagString: MainCamera
@@ -281,6 +284,32 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &830916201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830916196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1cb1ff11f8edc448b23cc29eff8d103, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCamera
+  eyeOffset: {x: 0, y: 0.6, z: 0}
+--- !u!114 &830916202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830916196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1cb1ff11f8edc448b23cc29eff8d103, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCamera
+  eyeOffset: {x: 0, y: 0.6, z: 0}
 --- !u!1 &1558489550
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,9 +465,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Minigame1
   duration: 30
-  speed: 5
-  dashDistance: 20
-  delay: 1
+  speed: 8
+  dashDistance: 40
+  delay: 0.3
+  escalationvar: 0.05
 --- !u!1 &1742929426
 GameObject:
   m_ObjectHideFlags: 0
@@ -577,6 +607,7 @@ GameObject:
   - component: {fileID: 1914345309}
   - component: {fileID: 1914345308}
   - component: {fileID: 1914345307}
+  - component: {fileID: 1914345310}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -655,9 +686,68 @@ Transform:
   m_LocalPosition: {x: 14.88, y: 1.31, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2009320044}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1914345310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914345306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1cb1ff11f8edc448b23cc29eff8d103, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCamera
+  eyeOffset: {x: 0, y: 0.6, z: 0}
+--- !u!1 &2009320043
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2009320044}
+  - component: {fileID: 2009320045}
+  m_Layer: 0
+  m_Name: PlayerCamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2009320044
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009320043}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.678359, y: -1.31, z: -2.4565697}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1914345309}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2009320045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009320043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1cb1ff11f8edc448b23cc29eff8d103, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCamera
+  eyeOffset: {x: 0, y: 0.6, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

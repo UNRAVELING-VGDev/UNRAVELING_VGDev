@@ -4,12 +4,15 @@ using System.Collections;
 
 public class Minigame1 : MonoBehaviour {
     [SerializeField] float duration = 30f; //duration of the mini game
-    public float speed = 5f;
-    public float dashDistance = 20f;
-    public float delay = 1f; //delay between dashes
+    [SerializeField] public float speed = 200f;
+    [SerializeField] private float dashDistance = 20f;
+    [SerializeField] public float delay = 1f; //delay between dashes
+    [SerializeField] public float escalationvar = 0.05f; //this goes up to 2.5x for 30 seconds. This is a multiplier per second.
+    //for example 1.05x for the first second, then 1.1x for the second second, then 1.15x and so on.
     private Vector3 startPos;
     private Vector3 endPos;
     private Quaternion startRot;
+    private Transform player;
     private float timer = 0f;
     private bool started = false;
     private bool hasHit = false;
@@ -17,7 +20,7 @@ public class Minigame1 : MonoBehaviour {
     void Start() {
         startPos = transform.position;
         startRot = transform.rotation;
-        endPos = startPos + Vector3.back * dashDistance;
+        player = GameObject.Find("Player").transform;
     }
 
     //start the minigame by calling this
@@ -31,11 +34,11 @@ public class Minigame1 : MonoBehaviour {
     }
 
     void Update() {
-        // for testing
-        //if (Keyboard.current.tKey.wasPressedThisFrame){
-        //    StartMinigame();
-        //}
-        
+        //for testing
+        if (Keyboard.current.tKey.wasPressedThisFrame){
+            StartMinigame();
+        }
+
         if (!started) {
             return;
         }
@@ -52,10 +55,20 @@ public class Minigame1 : MonoBehaviour {
 
     IEnumerator DashLoop() {
         while (true) {
+            float theta = Random.Range(0f, 2f * Mathf.PI);
+            Vector3 offset = new Vector3(Mathf.Cos(theta), 0f, Mathf.Sin(theta)) * dashDistance;
+
+            Vector3 spawnPos = player.position + offset;
+            endPos = player.position - offset;
+
+            spawnPos.y = startPos.y;
+            endPos.y = startPos.y;
+
+            transform.position = spawnPos;
+            transform.rotation = Quaternion.LookRotation(endPos - spawnPos);
+            Debug.Log("hallmonitor: dash start " + spawnPos);
+
             yield return MoveTo(endPos);
-            yield return TurnAround();
-            yield return MoveTo(startPos);
-            yield return TurnAround();
             yield return new WaitForSeconds(delay);
         }
     }
@@ -63,7 +76,8 @@ public class Minigame1 : MonoBehaviour {
     IEnumerator MoveTo(Vector3 target) {
         hasHit = false;
         while (transform.position != target) {
-            transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+            //speed goes up based on escalationvar. it's linear
+            transform.position = Vector3.MoveTowards(transform.position, target, speed*(1f + escalationvar*timer)*Time.deltaTime);
             yield return null;
         }
     }
