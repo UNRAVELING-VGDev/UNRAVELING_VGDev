@@ -6,8 +6,26 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 8dec5cfe59b5c5b498944c65e98a1240
+  - enabled: 1
     path: Assets/Scenes/Class204.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/Hallway/HallwayP1.unity
+    guid: b3af0db88f8b84dea82c5ecce979612a
+  - enabled: 1
+    path: Assets/Scenes/Hallway/Minigame1.unity
+    guid: 31b954291eccb442bbbe0fa60c9c8dcf
+  - enabled: 1
+    path: Assets/Scenes/Hallway/Minigame2.unity
+    guid: e1512e994886f4d109052cfa98cf6f4d
+  - enabled: 1
+    path: Assets/Scenes/Hallway/Minigame3.unity
+    guid: 91dd9b09d2d9b4c139343bb6a1c18fb0
+  - enabled: 1
+    path: Assets/Scenes/Hallway/HallwayP2.unity
+    guid: f6ffd48bd16cd4416bea1c035662843e
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

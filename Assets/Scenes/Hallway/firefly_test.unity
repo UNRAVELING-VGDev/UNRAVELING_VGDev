@@ -623,6 +623,10 @@ GameObject:
   - component: {fileID: 657337668}
   - component: {fileID: 657337669}
   - component: {fileID: 657337670}
+  - component: {fileID: 657337672}
+  - component: {fileID: 657337671}
+  - component: {fileID: 657337674}
+  - component: {fileID: 657337673}
   m_Layer: 0
   m_Name: TempChar
   m_TagString: Untagged
@@ -734,7 +738,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 657337663}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0f454a6d6844b436d9b0ca7a201a5eaa, type: 3}
   m_Name: 
@@ -750,7 +754,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 657337663}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a971f1ee847541f894471e614b215cb, type: 3}
   m_Name: 
@@ -783,6 +787,75 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &657337671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657337663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1b2c3d4e5f6478990abcdef12345678, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DuckController
+  _camera: {fileID: 89865193}
+  _duckPitch: 50
+  _duckedSpeedMultiplier: 0.5
+  _duckDownDuration: 0.12
+  _duckUpDuration: 0.2
+  _recoveryDuration: 0.5
+--- !u!114 &657337672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657337663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7f8a9b0c1d243658697a8b9c0d1e2f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WalkCameraBob
+  _camera: {fileID: 89865193}
+  _stepsPerSecond: 2.1
+  _referenceSpeed: 2.5
+  _blendTime: 0.15
+  _verticalBob: 0.04
+  _sideBob: 0.025
+  _forwardBob: 0.012
+  _rollDegrees: 1.5
+  _pitchDegrees: 1
+--- !u!114 &657337673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657337663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c4e9a1b2d8f4e6a9c0b3d5e7f1a2b4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ContinuousMovement
+  _moveSpeed: 2.5
+  _gravity: -9.81
+--- !u!114 &657337674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657337663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 039eb1544f6444047b655bbc96d1b9dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MouseLook360
+  _camera: {fileID: 89865193}
+  _sensitivity: 0.2
+  _pitchLimit: 89
+  _walkYawLimit: 120
 --- !u!1 &711197854
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,7 +20,8 @@ public class Minigame1 : MonoBehaviour {
     void Start() {
         startPos = transform.position;
         startRot = transform.rotation;
-        player = GameObject.Find("Player").transform;
+        player = GameObject.Find("Clay").transform;
+        StartMinigame();
     }
 
     //start the minigame by calling this
@@ -34,11 +35,6 @@ public class Minigame1 : MonoBehaviour {
     }
 
     void Update() {
-        //for testing
-        if (Keyboard.current.tKey.wasPressedThisFrame){
-            StartMinigame();
-        }
-
         if (!started) {
             return;
         }

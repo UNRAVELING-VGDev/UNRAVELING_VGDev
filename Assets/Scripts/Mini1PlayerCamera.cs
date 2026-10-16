@@ -8,13 +8,13 @@ public class Mini1PlayerCamera : MonoBehaviour {
     private float b;
 
     void Start() {
-        player = GameObject.Find("Player").transform;
+        player = transform.parent;
         a = player.eulerAngles.y;
 
         //lock the mouse so the camera can turn freely cuz first person
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        transform.position = player.position + eyeOffset;
+        transform.localPosition = eyeOffset;
     }
 
     void LateUpdate() {
@@ -23,7 +23,6 @@ public class Mini1PlayerCamera : MonoBehaviour {
         b -= look.y;
         //stop at straight up and straight down so the view doesnt flip over
         b = Mathf.Clamp(b, -90f, 90f);
-        transform.position = player.position;
         transform.rotation = Quaternion.Euler(b, a, 0f);
     }
 }
