@@ -149,8 +149,8 @@ Material:
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
-    - _maxAngle: 189
-    - _minAngle: 159
+    - _maxAngle: 220
+    - _minAngle: 190
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _ClipRect: {r: 0, g: 0, b: 0, a: 0}

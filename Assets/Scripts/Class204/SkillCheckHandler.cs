@@ -18,15 +18,28 @@ public class SkillCheckHandler : MonoBehaviour
     [SerializeField] protected RectTransform zoneRT;
     [SerializeField] protected RectTransform spinnerRT;
     [SerializeField] protected float radiusOffSet;
+
     RectTransform rt;
     Material mat;
 
-    // Measured in radians, from 0 to 2pi.Also assumes that the radius is zoneRT's width / 2.
     float position = 0;
     int currentMin;
     int currentMax;
     bool forward = true;
     Unity.Mathematics.Random rng;
+
+    private bool isActive = false;
+
+    private void OnEnable()
+    {
+        // start the skill check the moment the teacher finishes walking up
+        TeacherState.OnArrivedAtPlayer += StartSkillCheck;
+    }
+
+    private void OnDisable()
+    {
+        TeacherState.OnArrivedAtPlayer -= StartSkillCheck;
+    }
 
     private void Start()
     {
@@ -47,17 +60,35 @@ public class SkillCheckHandler : MonoBehaviour
         rng = new Unity.Mathematics.Random((uint)System.DateTime.Now.Ticks);
 
         currentMin = rng.NextInt(360);
-        Debug.Log(currentMin);
         currentMax = (currentMin + 30 + 360) % 360;
+
+        // hide the skill-check visuals until the teacher arrives
+        SetVisualsVisible(false);
+    }
+
+    // called when the teacher has walked up to the player
+    public void StartSkillCheck()
+    {
+        isActive = true;
+        SetVisualsVisible(true);
+    }
+
+    private void SetVisualsVisible(bool visible)
+    {
+        if (backgroundRT != null) backgroundRT.gameObject.SetActive(visible);
+        if (zoneRT != null) zoneRT.gameObject.SetActive(visible);
+        if (spinnerRT != null) spinnerRT.gameObject.SetActive(visible);
     }
 
     private void Update()
     {
+        if (!isActive) return;
+
         visualUpdate();
         if (Input.GetKeyUp(KeyCode.Space)) {
             float calcPos = position * 180 / Mathf.PI;
             if (currentMin < currentMax)
-            {    
+            {
                 if (calcPos >= currentMin && calcPos <= currentMax)
                 {
                     generateSkillZone();
