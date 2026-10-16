@@ -393,6 +393,14 @@ MonoBehaviour:
   dashDistance: 20
   delay: 1
   escalationvar: 0.05
+  warningDelay: 1
+  overshoot: 6
+  center: {fileID: 353495019}
+  spawnRadius: 8
+  player: {fileID: 1828395578}
+  dashesToFinish: 8
+  returnScene: HallwayP1
+  returnDelay: 1
 --- !u!114 &616795699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1083,7 +1091,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: a4a8cff0d64a64813b302922349d4ab5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1124,8 +1132,8 @@ Transform:
   m_GameObject: {fileID: 1558489550}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.13, y: 1.5, z: -7.17}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.13, y: 2.39, z: -7.17}
+  m_LocalScale: {x: 1, y: 1, z: 1.66}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 616795697}
@@ -1175,6 +1183,14 @@ MonoBehaviour:
   dashDistance: 20
   delay: 1
   escalationvar: 0.05
+  warningDelay: 1
+  overshoot: 6
+  center: {fileID: 653347422}
+  spawnRadius: 8
+  player: {fileID: 1828395578}
+  dashesToFinish: 8
+  returnScene: HallwayP1
+  returnDelay: 1
 --- !u!1 &1742929426
 GameObject:
   m_ObjectHideFlags: 0
@@ -1336,7 +1352,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1828395566}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c43aac7754613e4499daeb4e1675f736, type: 3}
   m_Name: 
@@ -1389,7 +1405,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DuckController
   _camera: {fileID: 1957340018}
   _duckHeight: 0.6
-  _duckPitch: 50
+  _duckPitch: -5
   _duckedSpeedMultiplier: 0.5
   _duckDownDuration: 0.12
   _duckHoldDuration: 0.25

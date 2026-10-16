@@ -7,6 +7,10 @@ public class HandController : MonoBehaviour
     [Header("Reach")]
     [SerializeField] Camera playerCamera;
     [SerializeField] float handDepth = 3.5f; // distance in front of cam
+    [Header("Rotation")]
+    [SerializeField] float rotationSmoothing = 15f;
+    [SerializeField] float swayTilt = 4f;
+    [SerializeField] float maxTilt = 25f;
     [Header("Swat")]
     [SerializeField] float hitRadius = 0.4f;
     [SerializeField] float swatCooldown = 0.75f;
@@ -15,10 +19,13 @@ public class HandController : MonoBehaviour
     public int hits;
     Vector3 velocity;
     float cooldown;
+    Quaternion restRotation;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = false;
+        restRotation = Quaternion.Inverse(playerCamera.transform.rotation) * transform.rotation;
         // Start at the target so hand doesn't move eradically during game start
         transform.position = GetTarget();
     }
@@ -32,6 +39,8 @@ public class HandController : MonoBehaviour
         velocity += acceleration * dt;
         transform.position += velocity * dt;
         cooldown -= dt;
+
+        UpdateRotation(dt);
           
         if (Input.GetMouseButtonDown(0) && cooldown <= 0f)
         {
@@ -39,6 +48,20 @@ public class HandController : MonoBehaviour
             cooldown = swatCooldown;
             Swat();
         }
+    }
+
+    void UpdateRotation(float dt)
+    {
+        Transform cam = playerCamera.transform;
+
+        Vector3 localVel = cam.InverseTransformDirection(velocity);
+        float roll  = Mathf.Clamp(-localVel.x * swayTilt, -maxTilt, maxTilt);
+        float pitch = Mathf.Clamp(-localVel.y * swayTilt, -maxTilt, maxTilt);
+
+        Quaternion target = cam.rotation * Quaternion.Euler(pitch, 0f, roll) * restRotation;
+
+        float t = 1f - Mathf.Exp(-rotationSmoothing * dt);
+        transform.rotation = Quaternion.Slerp(transform.rotation, target, t);
     }
 
     void Swat()
