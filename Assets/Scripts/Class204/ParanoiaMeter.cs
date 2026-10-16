@@ -28,4 +28,9 @@ public class ParanoiaMeter : MonoBehaviour
         if (paranoiaText != null)
             paranoiaText.text = "Paranoia: " + paranoiaLevel.ToString("F0");
     }
+
+    private void OnDestroy()
+    {
+        ParanoiaVFXFeature.SetTension(0f);
+    }
 }
