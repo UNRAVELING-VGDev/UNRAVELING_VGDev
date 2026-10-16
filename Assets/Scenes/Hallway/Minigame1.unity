@@ -370,7 +370,7 @@ Transform:
   m_GameObject: {fileID: 616795696}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.75698, y: -0.651, z: -1.4432797}
+  m_LocalPosition: {x: 0.02, y: -0.651, z: 0.56}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -385,13 +385,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 616795696}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e8bfc1543c384408bc1731405ca80c, type: 3}
+  m_Script: {fileID: 11500000, guid: 0280bd728c1a2f446ade62ea8cbdf3f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Minigame1
   duration: 30
-  speed: 20
+  speed: 8
   dashDistance: 20
   delay: 1
+  escalationvar: 0.05
   warningDelay: 1
   overshoot: 6
   center: {fileID: 353495019}
@@ -1174,13 +1175,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1558489550}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e8bfc1543c384408bc1731405ca80c, type: 3}
+  m_Script: {fileID: 11500000, guid: 0280bd728c1a2f446ade62ea8cbdf3f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Minigame1
   duration: 30
-  speed: 11
-  dashDistance: 30
+  speed: 8
+  dashDistance: 20
   delay: 1
+  escalationvar: 0.05
   warningDelay: 1
   overshoot: 6
   center: {fileID: 653347422}
