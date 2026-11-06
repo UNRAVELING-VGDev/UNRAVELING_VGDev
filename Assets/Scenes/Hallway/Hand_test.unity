@@ -401,6 +401,9 @@ MonoBehaviour:
   damping: 10
   playerCamera: {fileID: 1370146645}
   handDepth: 3.5
+  rotationSmoothing: 15
+  swayTilt: 4
+  maxTilt: 25
   hitRadius: 0.4
   swatCooldown: 0.75
   hits: 0
@@ -432,7 +435,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.27059805, y: 0.6532815, z: 0.27059805, w: 0.6532815}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.5, y: 0.62, z: 1.22}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1032154348}
@@ -462,7 +465,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 282953d38c58b4887b413438f8d0b0c1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

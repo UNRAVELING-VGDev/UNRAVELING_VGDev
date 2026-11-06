@@ -6,7 +6,7 @@ using System.Linq;
 public class Badparticlemanager : MonoBehaviour
 {
     //references
-    public BadParticle[] particlePrefabs; 
+    public BadParticle[] particlePrefabs;
     public Transform playerHead;
     public TeacherState teacher;
     public BoxCollider roomBounds;
@@ -24,11 +24,17 @@ public class Badparticlemanager : MonoBehaviour
     public float maxAttackDelay = 8f;
     public float cooldown = 2f;
 
-    //particles that currently exist (tracked) 
+    //staredown barrage (while the teacher walks up)
+    public float barrageMinDelay = 0.2f;   // time between shots during the walk-up
+    public float barrageMaxDelay = 0.5f;
+
+    //particles that currently exist (tracked)
     private List<BadParticle> idleParticles = new List<BadParticle>();
     private List<BadParticle> attackingParticles = new List<BadParticle>();
 
     public void Start(){
+        if (teacher == null) teacher = FindFirstObjectByType<TeacherState>();
+
         for (int i = 0; i < particleCount; i++){
             //where does it spawn?!
             Bounds b = roomBounds.bounds;
@@ -46,7 +52,14 @@ public class Badparticlemanager : MonoBehaviour
             idleParticles.Add(newParticle);
         }
         LevelClock.onStageChange += OnStageChange;
+        TeacherState.OnArrivedAtPlayer += OnTeacherArrived;
         StartCoroutine(AttackLoop());
+    }
+
+    void OnDisable()
+    {
+        LevelClock.onStageChange -= OnStageChange;
+        TeacherState.OnArrivedAtPlayer -= OnTeacherArrived;
     }
 
     public void SetAttackerCount(int count) {
@@ -55,6 +68,11 @@ public class Badparticlemanager : MonoBehaviour
             return;
         }
         attackerCount = count;
+    }
+
+    // true only while the teacher is facing the board
+    bool TeacherBackTurned() {
+        return teacher == null || teacher.IsBackTurned;
     }
 
     BadParticle PickAttacker(){
@@ -70,15 +88,30 @@ public class Badparticlemanager : MonoBehaviour
         return attackingParticles.Any(attacker => attacker.IsAttacking);
     }
 
+    // moves particles that finished their attack back to idle
+    void RecycleFinished() {
+        for (int i = attackingParticles.Count - 1; i >= 0; i--) {
+            if (!attackingParticles[i].IsAttacking) {
+                idleParticles.Add(attackingParticles[i]);
+                attackingParticles.RemoveAt(i);
+            }
+        }
+    }
+
+    // calls off every attack in progress
+    void CancelAllAttacks() {
+        foreach (BadParticle p in attackingParticles)
+            p.CancelAttack();
+        RecycleFinished();
+    }
+
     void OnStageChange(int stage) {
         if (stage == 4) {
-            cooldown = 0;
-            minAttackDelay = 0;
-            maxAttackDelay = 0;
+            // staredown: stop the normal loop and start the walk-up barrage
+            StopAllCoroutines();
+            RecycleFinished();
             SetAttackerCount(particleCount);
-        }
-        if (stage == 4) {  
-            StopAllCoroutines();  
+            StartCoroutine(StaredownBarrage());
             return;
         } else if (stage != 1) {
             if (minAttackDelay != 0) {
@@ -94,25 +127,41 @@ public class Badparticlemanager : MonoBehaviour
         }
     }
 
+    // teacher reached the player: the skill check takes over, so stop everything
+    void OnTeacherArrived() {
+        StopAllCoroutines();
+        CancelAllAttacks();
+    }
 
-    void OnDisable()
-    {
-        LevelClock.onStageChange -= OnStageChange;
+    // fires particles nonstop while the teacher walks up to the player
+    IEnumerator StaredownBarrage() {
+        while (teacher == null || teacher.state == TeacherState.State.WalkingToPlayer) {
+            RecycleFinished();
+
+            BadParticle attacker = PickAttacker();
+            if (attacker != null) {
+                attacker.Attack(playerHead);
+            }
+
+            yield return new WaitForSeconds(Random.Range(barrageMinDelay, barrageMaxDelay));
+        }
     }
 
     IEnumerator AttackLoop(){
         while(true){
             yield return new WaitForSeconds(Random.Range(minAttackDelay, maxAttackDelay));
 
-            //not attacking when teacher looking
-            while (teacher != null && teacher.isFacingPlayer){
+            //only attack while the teacher's back is turned
+            while (!TeacherBackTurned()){
                 yield return null;
             }
-            BadParticle attacker = PickAttacker();
-            if (attacker == null) {
+            if (idleParticles.Count == 0) {
                 continue;
             }
             StartCoroutine(SendAttackers(attackerCount));
+
+            // wait one frame so the first attacker has launched
+            yield return null;
             while (AnyAttacking()){
                 yield return null;
             }
@@ -126,6 +175,9 @@ public class Badparticlemanager : MonoBehaviour
     {
         for (int i = 0; i < n; i++)
         {
+            // stop sending the moment she starts turning around
+            if (!TeacherBackTurned()) yield break;
+
             BadParticle attacker = PickAttacker();
             if (attacker == null) {
                 continue;
@@ -137,5 +189,4 @@ public class Badparticlemanager : MonoBehaviour
                 );
         }
     }
-    
 }

@@ -47,6 +47,22 @@ public class LoseState : MonoBehaviour
         }
     }
 
+    void OnEnable()
+    {
+        // losestate 2: failed the staredown skill check (3 misses)
+        SkillCheckHandler.OnSkillCheckFailed += OnStaredownFailed;
+    }
+
+    void OnDisable()
+    {
+        SkillCheckHandler.OnSkillCheckFailed -= OnStaredownFailed;
+    }
+
+    void OnStaredownFailed()
+    {
+        Lose("failed staredown");
+    }
+
     //losestate 1: paranoia is maxed
     void Update()
     {
@@ -58,7 +74,7 @@ public class LoseState : MonoBehaviour
         }
     }
 
-    //idk what staredown currently does so just call this for a failedstaredown
+    // called for any loss (paranoia maxed or failed staredown)
     public void Lose(string why)
     {
         if (IsOver) {
@@ -68,7 +84,7 @@ public class LoseState : MonoBehaviour
         IsOver = true;
         Debug.Log("GAME OVER: "+why);
 
-        //sends out the event. reset can listen to this.
+        //sends out the event. the game over menu listens to this.
         if (onGameOver != null) {
             onGameOver();
         }
@@ -97,23 +113,21 @@ public class LoseState : MonoBehaviour
             particles.StopAllCoroutines();
         }
 
-        //I froze the particles instead of removing it.
-        //probably not a good idea but idk.
+
         foreach (BadParticle p in FindObjectsByType<BadParticle>(FindObjectsSortMode.None))
             p.enabled = false;
 
-        //give the mouse back
+
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
         StartCoroutine(ResetCamera());
     }
 
-    //this just tweens the camera back to face the front.
-    //also no resume yet, but end the courtine there when that is added ig.
     IEnumerator ResetCamera()
     {
-        
+        if (look == null || cam == null) yield break;  
+
         Quaternion bodyFrom = look.transform.localRotation;
         Quaternion camFrom = cam.transform.localRotation;
 
@@ -122,7 +136,6 @@ public class LoseState : MonoBehaviour
         {
             t += Time.deltaTime * resetSpeed;
 
-            //honestly 
             look.transform.localRotation = Quaternion.Slerp(bodyFrom, Quaternion.identity, t);
             cam.transform.localRotation = Quaternion.Slerp(camFrom, Quaternion.identity, t);
 

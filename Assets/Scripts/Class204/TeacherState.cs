@@ -16,8 +16,12 @@ public class TeacherState : MonoBehaviour
     // fires the moment the teacher finishes walking up to the player
     public static event System.Action OnArrivedAtPlayer;
 
+    // fires whenever the teacher changes state (particles listen to this)
+    public static event System.Action<State> OnStateChanged;
+
     public Animator animator;
     public State state;
+
     public bool isFacingPlayer
     {
         get
@@ -36,6 +40,10 @@ public class TeacherState : MonoBehaviour
             }
         }
     }
+
+    // true only while the teacher is fully turned and watching the class
+    public bool IsWatchingClass => state == State.FacingPlayer;
+    public bool IsBackTurned => state == State.FacingBoard;
 
     [Header("Turning")]
     public float turnDuration = 1.5f;
@@ -176,6 +184,7 @@ public class TeacherState : MonoBehaviour
     {
         animator.SetInteger("State", (int)state);
         this.state = state;
+        OnStateChanged?.Invoke(state);   // let particles know
     }
 
     IEnumerator RotateOver(Quaternion target)

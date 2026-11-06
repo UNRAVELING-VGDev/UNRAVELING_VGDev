@@ -6,16 +6,16 @@ public class FireflyManager : MonoBehaviour
 {
   [Header("References")]
   [SerializeField]
-  private FireflyParticle _fireflyPrefab;
+  protected FireflyParticle _fireflyPrefab;
 
   [SerializeField]
-  private Transform _spawnPoint;
+  protected Transform _spawnPoint;
 
   [SerializeField]
-  private Transform _playerTarget;
+  protected Transform _playerTarget;
 
   [SerializeField]
-  private Transform _hallway;
+  protected Transform _hallway;
 
   [Header("Lane Area (hallway's x/y)")]
   [SerializeField]
@@ -50,7 +50,7 @@ public class FireflyManager : MonoBehaviour
 
   private readonly List<Vector2> _recentLanes = new List<Vector2>();
   private float _spawnTimer;
-  private ObjectPool<FireflyParticle> _pool;
+  protected ObjectPool<FireflyParticle> _pool;
 
   private void Awake()
   {
@@ -89,7 +89,7 @@ public class FireflyManager : MonoBehaviour
     return f;
   }
 
-  private void SpawnFirefly()
+  protected virtual void SpawnFirefly()
   {
     if (_fireflyPrefab == null || _spawnPoint == null || _playerTarget == null || _hallway == null)
       return;
@@ -100,7 +100,7 @@ public class FireflyManager : MonoBehaviour
     f.init(lane, _playerTarget, _hallway);
   }
 
-  private Vector2 PickLane()
+  protected Vector2 PickLane()
   {
     Vector2 best = RandomLane();
 

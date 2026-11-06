@@ -32,6 +32,9 @@ public class BadParticle : MonoBehaviour
     public ParanoiaMeter paranoia;
     public float paranoiaIncrease = 20f;
 
+    //teacher: particles only attack while her back is turned
+    public bool cancelWhenTeacherTurns = true;
+
     //attack movement (the plugged-in variant: Diver / Weaver)
     private IAttackMovement movement;
     private Vector3 attackStart;      // where the attack launched from
@@ -43,12 +46,27 @@ public class BadParticle : MonoBehaviour
     //manager reads to know if attack is done
     public bool IsAttacking => attackTarget != null;
 
+    void OnEnable()
+    {
+        TeacherState.OnStateChanged += OnTeacherStateChanged;
+    }
+
+    void OnDisable()
+    {
+        TeacherState.OnStateChanged -= OnTeacherStateChanged;
+    }
+
     void Start()
     {
         driftPos = transform.position;
         bobOffset = Random.Range(0f, Mathf.PI * 2f);
 
         movement = GetComponent<IAttackMovement>();   // grab whichever variant is attached
+
+        // always use the ParanoiaMeter that's actually in the scene
+        paranoia = FindFirstObjectByType<ParanoiaMeter>();
+        if (paranoia == null)
+            Debug.LogWarning("BadParticle: no ParanoiaMeter found in the scene!", this);
 
         PickNewTargetPosition();
     }
@@ -66,6 +84,22 @@ public class BadParticle : MonoBehaviour
         attackTarget = target;
     }
 
+    // stops an attack early (no hit, no sound) and respawns somewhere in the room
+    public void CancelAttack()
+    {
+        if (IsAttacking) StopAttacking();
+    }
+
+    // the teacher started turning around: call off the attack
+    void OnTeacherStateChanged(TeacherState.State newState)
+    {
+        if (!cancelWhenTeacherTurns) return;
+
+        if (newState != TeacherState.State.FacingBoard &&
+            newState != TeacherState.State.WalkingToPlayer)
+            CancelAttack();
+    }
+
     void Update()
     {
         if (attackTarget != null)
@@ -81,21 +115,24 @@ public class BadParticle : MonoBehaviour
         // ask the plugged-in variant where we should be (flies toward the offset target)
         transform.position = movement.GetPosition(attackStart, attackPoint, attackTime);
 
+        // HIT: the particle touched the player's head at any point during the attack
+        float headDist = Vector3.Distance(transform.position, playerHead.position);
+        if (headDist <= hitRadius)
+        {
+            isHit = true;
+            Debug.Log("HIT");
+            if (paranoia != null) paranoia.Add(paranoiaIncrease, true);   
+            AudioManager.instance.playOneShot("clay_hurt");
+            StopAttacking();
+            return;
+        }
+
+        // DODGED: it reached its aim point without ever touching the head
         if (Vector3.Distance(transform.position, attackPoint) <= attackDistance)
         {
-            isHit = Vector3.Distance(transform.position, playerHead.position) <= hitRadius;
-
-            if (isHit)
-            {
-                Debug.Log("HIT");
-                if (paranoia != null) paranoia.Add(paranoiaIncrease);
-                AudioManager.instance.playOneShot("clay_hurt");
-            }
-            else
-            {
-                Debug.Log("DODGED");
-                AudioManager.instance.playOneShot("clay_dodge", transform.position);
-            }
+            isHit = false;
+            Debug.Log($"DODGED (closest head distance at end: {headDist:F2})");
+            AudioManager.instance.playOneShot("clay_dodge", transform.position);
             StopAttacking();
         }
     }

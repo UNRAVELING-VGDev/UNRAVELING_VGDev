@@ -26,13 +26,8 @@ public class PlayerRay : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, maxDistance, ~0, QueryTriggerInteraction.Ignore))
         {
-            Debug.Log("ray hit: " + hit.collider.gameObject.name);
             if (hit.collider.transform.IsChildOf(teacher.transform) && teacherState.isFacingPlayer)
                 lookingAtTeacher = true;
-        }
-        else
-        {
-            Debug.Log("ray hit NOTHING");
         }
 
         if (lookingAtTeacher)

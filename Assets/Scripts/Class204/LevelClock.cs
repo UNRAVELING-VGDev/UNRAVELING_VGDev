@@ -17,10 +17,20 @@ public class LevelClock : MonoBehaviour
     [SerializeField] float staredownDuration;
 
     // how long the teacher's walk-up takes before the skill check starts
-    [SerializeField] float walkUpDuration = 3f;
+    [SerializeField] float walkUpDuration = 2f;
 
     private float staredownStartTime;
     private bool staredownStarted = false;
+
+    void OnEnable()
+    {
+        SkillCheckHandler.OnSkillCheckPassed += CompleteLevel;
+    }
+
+    void OnDisable()
+    {
+        SkillCheckHandler.OnSkillCheckPassed -= CompleteLevel;
+    }
 
     void Start()
     {
@@ -49,19 +59,13 @@ public class LevelClock : MonoBehaviour
             Debug.Log("stage is " + stage);
             staredownStartTime = Time.timeSinceLevelLoad;
         }
-        if (stage < 5 && Time.timeSinceLevelLoad >= stage1Duration + stage2Duration + stage3Duration + staredownDuration)
-        {
-            stage = 5;
-            onStageChange?.Invoke(5);
-            Debug.Log("stage is " + stage);
-
-            AudioManager.instance.triggerEnd("Teacher Stare"); // End?
-            AudioManager.instance.triggerEnd("Level 01 Music");
-        }
 
         if (stage == 4)
         {
-            AudioManager.instance.setGlobalParameter("Teacher Stare Level", (Time.timeSinceLevelLoad - staredownStartTime) / staredownDuration);
+            float stareLevel = staredownDuration > 0f
+                ? Mathf.Clamp01((Time.timeSinceLevelLoad - staredownStartTime) / staredownDuration)
+                : 1f;
+            AudioManager.instance.setGlobalParameter("Teacher Stare Level", stareLevel);
 
             // after the walk-up finishes, start the skill check (once)
             if (!staredownStarted && Time.timeSinceLevelLoad - staredownStartTime >= walkUpDuration)
@@ -70,5 +74,18 @@ public class LevelClock : MonoBehaviour
                 OnStaredownReady?.Invoke();
             }
         }
+    }
+
+    // called when the skill check is passed: stage 5 = level complete
+    public void CompleteLevel()
+    {
+        if (stage >= 5) return;
+
+        stage = 5;
+        onStageChange?.Invoke(5);
+        Debug.Log("stage is " + stage);
+
+        AudioManager.instance.triggerEnd("Teacher Stare"); // End?
+        AudioManager.instance.triggerEnd("Level 01 Music");
     }
 }

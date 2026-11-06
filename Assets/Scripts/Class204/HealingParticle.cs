@@ -36,6 +36,9 @@ public class HealingParticle : MonoBehaviour {
     private bool caught = false;
     private float suckTime = 0f;
 
+    // true while frozen in place because the skill check is running
+    private bool heldBySkillCheck = false;
+
     public bool IsCaught => caught;
     public event System.Action<HealingParticle> Caught;
     public static event System.Action<HealingParticle> Unregistered;
@@ -93,6 +96,14 @@ public class HealingParticle : MonoBehaviour {
         return 2.8f*t*t*t-1.8f*t*t;
     }
 
+    // the idle floating offset at a given time
+    Vector3 Bob(float t) {
+        float bobX = Mathf.Sin(t * bobFrequency + bobOffset.x) * amplitudes.x;
+        float bobY = Mathf.Sin(3 * t * bobFrequency + bobOffset.y) * amplitudes.y;
+        float bobZ = Mathf.Sin(2 * t * bobFrequency + bobOffset.z) * amplitudes.z;
+        return new Vector3(bobX, bobY, bobZ);
+    }
+
     public void OnAttack(Transform newTarget) {
         if (inDecayZone) {
             BeginCatch(newTarget);
@@ -119,23 +130,34 @@ public class HealingParticle : MonoBehaviour {
 
             return;
         }
+
+        // skill check is running: stop approaching and just float where we are
+        if (SkillCheckHandler.SkillCheckRunning) {
+            if (!heldBySkillCheck) {
+                heldBySkillCheck = true;
+                onAttack = false;
+                inDecayZone = false;
+                transform.localScale = originalScale;
+                // anchor so the bobbing continues from the current spot without jumping
+                position = transform.position - Bob(timer);
+            }
+            transform.position = position + Bob(timer);
+            return;
+        }
+
         if (attackTarget == null) {
             return;
         }
 
         if (timer < idleTime && !onAttack) { // floating around
-            float bobX = Mathf.Sin(timer * bobFrequency + bobOffset.x) * amplitudes.x;
-            float bobY = Mathf.Sin(3 * timer * bobFrequency + bobOffset.y) * amplitudes.y;
-            float bobZ = Mathf.Sin(2 * timer * bobFrequency + bobOffset.z) * amplitudes.z;
-
-            transform.position = position + new Vector3(bobX, bobY, bobZ);
+            transform.position = position + Bob(timer);
         }
         else { // heading toward the player
             if (!onAttack) {
                 position = transform.position;
                 onAttack = true;
                 Vector3 targetDirection = (attackTarget.position - transform.position).normalized;
-            
+
                 // curvy stuff
                 if (targetDirection == Vector3.zero) {
                     Destroy(gameObject);
