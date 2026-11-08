@@ -798,6 +798,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -5549988239196594857, guid: bc55d11460c38bc458f322f4e7bf1eec, type: 3}
+      propertyPath: _minGlow
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5549988239196594857, guid: bc55d11460c38bc458f322f4e7bf1eec, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
