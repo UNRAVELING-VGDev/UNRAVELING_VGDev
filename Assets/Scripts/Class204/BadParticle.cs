@@ -2,6 +2,16 @@ using UnityEngine;
 
 public class BadParticle : MonoBehaviour
 {
+    public enum AttackOutcome
+    {
+        Hit,
+        Dodged,
+        Canceled
+    }
+
+    public static event System.Action<BadParticle> AttackStarted;
+    public static event System.Action<BadParticle, AttackOutcome> AttackFinished;
+
     //bounds
     public BoxCollider roomBounds;
     public float padding = 0.5f;
@@ -54,6 +64,8 @@ public class BadParticle : MonoBehaviour
     void OnDisable()
     {
         TeacherState.OnStateChanged -= OnTeacherStateChanged;
+        if (IsAttacking)
+            AttackFinished?.Invoke(this, AttackOutcome.Canceled);
     }
 
     void Start()
@@ -82,12 +94,13 @@ public class BadParticle : MonoBehaviour
         attackPoint = target.position + attackOffset;   // locked, offset to a side
         attackTime = 0f;
         attackTarget = target;
+        AttackStarted?.Invoke(this);
     }
 
     // stops an attack early (no hit, no sound) and respawns somewhere in the room
     public void CancelAttack()
     {
-        if (IsAttacking) StopAttacking();
+        if (IsAttacking) FinishAttack(AttackOutcome.Canceled);
     }
 
     // the teacher started turning around: call off the attack
@@ -123,7 +136,7 @@ public class BadParticle : MonoBehaviour
             Debug.Log("HIT");
             if (paranoia != null) paranoia.Add(paranoiaIncrease, true);   
             AudioManager.instance.playOneShot("clay_hurt");
-            StopAttacking();
+            FinishAttack(AttackOutcome.Hit);
             return;
         }
 
@@ -133,8 +146,14 @@ public class BadParticle : MonoBehaviour
             isHit = false;
             Debug.Log($"DODGED (closest head distance at end: {headDist:F2})");
             AudioManager.instance.playOneShot("clay_dodge", transform.position);
-            StopAttacking();
+            FinishAttack(AttackOutcome.Dodged);
         }
+    }
+
+    void FinishAttack(AttackOutcome outcome)
+    {
+        StopAttacking();
+        AttackFinished?.Invoke(this, outcome);
     }
 
     void StopAttacking()

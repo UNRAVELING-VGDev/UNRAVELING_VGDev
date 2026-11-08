@@ -40,6 +40,8 @@ public class DuckController : MonoBehaviour
     public float PitchOffset => _duckPitch * _duckAmount;
     public float HeightOffset => -_duckHeight * _duckAmount;
 
+    public event System.Action DuckCompleted;
+
     float TotalDuckTime => _duckDownDuration + _duckHoldDuration + _duckUpDuration;
 
     void Awake()
@@ -87,6 +89,7 @@ public class DuckController : MonoBehaviour
                 _duckAmount = 0f;
                 _phase = DuckPhase.Recovering;
                 _phaseTime = 0f;
+                DuckCompleted?.Invoke();
             }
         }
         else if (_phase == DuckPhase.Recovering)

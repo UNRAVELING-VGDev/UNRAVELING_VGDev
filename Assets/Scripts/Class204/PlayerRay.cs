@@ -9,6 +9,8 @@ public class PlayerRay : MonoBehaviour
 
     public float paranoiaIncreaseRate = 20f;
 
+    public bool IsLookingAtTeacher { get; private set; }
+
     Ray ray;
     float maxDistance = 500f; 
 
@@ -30,7 +32,14 @@ public class PlayerRay : MonoBehaviour
                 lookingAtTeacher = true;
         }
 
+        IsLookingAtTeacher = lookingAtTeacher;
+
         if (lookingAtTeacher)
             paranoia.Add(paranoiaIncreaseRate * Time.deltaTime);
+    }
+
+    void OnDisable()
+    {
+        IsLookingAtTeacher = false;
     }
 }

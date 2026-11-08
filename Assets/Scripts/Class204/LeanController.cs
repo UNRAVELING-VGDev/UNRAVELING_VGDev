@@ -29,6 +29,8 @@ public class LeanController : MonoBehaviour
     private float fovKick;
     private float cameraHolderBaseY;
 
+    public float LeanAmount => lean;
+
     void Awake()
     {
         cameraHolderBaseY = cameraHolder.localPosition.y;
