@@ -23,6 +23,9 @@ public class LightBeamAdjustment : MonoBehaviour
     public float beamThickness = 0.2f;
     public float cooldown = 3f;
     public float maxDistance = 30f;
+    public float aliveTime = 1f;
+    public CentipedeBoss centipede;
+    public float beamDamage = 1f;
 
     private float timer = 0f;
     private bool canShoot = true;
@@ -38,6 +41,8 @@ public class LightBeamAdjustment : MonoBehaviour
         beam.transform.position = (origin + endPosition) / 2;
         beam.transform.up = direction;
         beam.transform.localScale = new Vector3(beamThickness, length / 2, beamThickness); // Local scale of cylinder prefab is 2 units tall for 1.0 y scale.
+
+        Destroy(beam, aliveTime);
     }
 
     void Start()
@@ -79,6 +84,7 @@ public class LightBeamAdjustment : MonoBehaviour
 
                     if (Physics.Raycast(ray, out hit, 100f))
                     {
+                        float potentialDamage = beamDamage;
                         float totalDistance = 0;
                         canShoot = false;
                         timer = 0f;
@@ -94,12 +100,21 @@ public class LightBeamAdjustment : MonoBehaviour
 
                             if (totalDistance >= maxDistance) break;
 
+                            GameObject hitObject = hit.collider.gameObject;
+
+                            if (hitObject.CompareTag("Enemy"))
+                            {
+                                centipede.OnHit(potentialDamage);
+                                break;
+                            }
+
                             direction -= 2 * Vector3.Dot(direction, hit.normal) * hit.normal;
                             origin = hit.point;
                             if (Physics.Raycast(origin, direction, out hit, 100f))
                                 distance = Vector3.Distance(origin, hit.point);
                             else
                                 distance = maxDistance - totalDistance;
+                            potentialDamage *= 2.5f;
                         }
                         BeamFired?.Invoke();
                     }
