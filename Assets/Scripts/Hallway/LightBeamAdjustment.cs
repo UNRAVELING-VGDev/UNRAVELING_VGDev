@@ -27,6 +27,8 @@ public class LightBeamAdjustment : MonoBehaviour
     private float timer = 0f;
     private bool canShoot = true;
 
+    public event System.Action BeamFired;
+
     void GenerateBeam(Vector3 origin, Vector3 direction, float length) // Assuming direction is normalized
     {
         Vector3 endPosition = origin + direction * length;
@@ -99,6 +101,7 @@ public class LightBeamAdjustment : MonoBehaviour
                             else
                                 distance = maxDistance - totalDistance;
                         }
+                        BeamFired?.Invoke();
                     }
                 }
             }
