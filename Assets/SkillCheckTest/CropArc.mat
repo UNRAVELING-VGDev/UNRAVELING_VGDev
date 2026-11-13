@@ -90,7 +90,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _imageTexture:
-        m_Texture: {fileID: 2800000, guid: 419e587e7474d2e439a82b72ff9376ef, type: 3}
+        m_Texture: {fileID: 2800000, guid: 8e49368a6bdbd4b80a68d791f6bc7568, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -149,8 +149,9 @@ Material:
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
-    - _maxAngle: 70
-    - _minAngle: 48
+    - _edgeSoftness: 2
+    - _maxAngle: 344
+    - _minAngle: 324
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _ClipRect: {r: 0, g: 0, b: 0, a: 0}

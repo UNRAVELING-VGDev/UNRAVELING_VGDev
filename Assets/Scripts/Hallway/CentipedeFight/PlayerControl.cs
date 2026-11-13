@@ -29,10 +29,14 @@ public class PlayerControl : MonoBehaviour
     private float dashTimer;
     private float cooldownTimer;
     private Vector3 dashDirection;
+    private float dashTravel;
 
     // other scripts can check these!!!! 
     public bool IsDashing => isDashing;
     public bool CanDash => !isDashing && cooldownTimer <= 0f && controller.isGrounded;
+    public float WalkingDistanceThisFrame { get; private set; }
+
+    public event System.Action DashCompleted;
 
     void Awake()
     {
@@ -109,12 +113,15 @@ public class PlayerControl : MonoBehaviour
 
         dashDirection = dir.normalized;
         isDashing = true;
+        dashTravel = 0f;
         dashTimer = 0f;
         cooldownTimer = dashCooldown;
     }
 
     void Move(Vector2 input)
     {
+        Vector3 startPosition = transform.position;
+        bool walking = !isDashing;
         Vector3 move;
 
         if (isDashing)
@@ -139,5 +146,15 @@ public class PlayerControl : MonoBehaviour
         move.y = verticalVelocity;
 
         controller.Move(move * Time.deltaTime);
+
+        Vector3 displacement = transform.position - startPosition;
+        displacement.y = 0f;
+        WalkingDistanceThisFrame = walking ? displacement.magnitude : 0f;
+        if (!walking)
+        {
+            dashTravel += displacement.magnitude;
+            if (!isDashing && dashTravel >= 0.1f)
+                DashCompleted?.Invoke();
+        }
     }
 }

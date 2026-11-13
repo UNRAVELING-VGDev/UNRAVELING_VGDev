@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
+using Random=UnityEngine.Random;
 
 public class CentipedeBoss : MonoBehaviour
 {
@@ -24,6 +27,9 @@ public class CentipedeBoss : MonoBehaviour
     [SerializeField] PullbackAttack _pullback;
     [SerializeField] CentipedeAttack _whip;
     [SerializeField] CentipedeAttack _acid;
+
+    [Header("Health")]
+    [SerializeField] float health = 100f;
 
     void Awake()
     {
@@ -129,5 +135,16 @@ public class CentipedeBoss : MonoBehaviour
         if (roll < pullback + whip)
             return _whip;
         return _acid;
+    }
+
+    public void OnHit(float damage)
+    {
+        Debug.Log("I AHVE BEEN HIT!");
+        health -= damage;
+
+        if (health <= 0)
+        {
+            Debug.Log("I AM DEAD OR SOMETHING IDK");
+        }
     }
 }
