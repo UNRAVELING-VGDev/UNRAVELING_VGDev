@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,28 +9,33 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private Transform cameraTransform;   // the child camera
 
     [Header("Movement")]
-    [SerializeField] private float moveSpeed = 4f;
+    [SerializeField] private float maxMoveSpeed = 15f;
+    [SerializeField] private float acceleration = 1f;
+    [SerializeField] private Vector3 velocity = Vector3.zero;
     [SerializeField] private float gravity = 20f;
+    [SerializeField] private float groundFriction = 0.985f;
 
     [Header("Look")]
     [SerializeField] private float mouseSensitivity = 0.1f;
     [SerializeField] private float pitchLimit = 85f;
 
     [Header("Dash")]
-    [SerializeField] private float dashDistance = 4f;      // how far one dash goes
-    [SerializeField] private float dashDuration = 0.18f;   // how long the dash takes
+    [SerializeField] private float dashDuration = 0.175f;   // how long it takes for the dash to reach full speed
     [SerializeField] private float dashCooldown = 0.8f;    // wait before you can dash again
-    [SerializeField] private float dashHopHeight = 0.35f;  // how high the little hop goes (meters)
+    [SerializeField] private float dashAcceleration = 0.6f;  
+    [SerializeField] private float dashHopHeight = 0.6f;  // how high the little hop goes (meters)
+    [SerializeField] private float dashFriction = 0.98f;
 
     private CharacterController controller;
     private float pitch;            // up/down angle of the camera
     private float verticalVelocity; 
-
     private bool isDashing;
     private float dashTimer;
     private float cooldownTimer;
-    private Vector3 dashDirection;
-    private float dashTravel;
+    private Transform dashTransform;
+    private Vector2 dashInput = Vector2.zero;
+    private Vector3 dashVel = Vector3.zero;
+    private float friction = 1;
 
     // other scripts can check these!!!! 
     public bool IsDashing => isDashing;
@@ -106,14 +112,15 @@ public class PlayerControl : MonoBehaviour
     // direction comes from WASD at the moment Space is pressed
     void StartDash(Vector2 input)
     {
+        dashVel = Vector3.zero;
         verticalVelocity = Mathf.Sqrt(2f * gravity * dashHopHeight);
-        Vector3 dir = transform.right * input.x + transform.forward * input.y;
-        if (dir.sqrMagnitude < 0.01f)
-            dir = transform.forward;               // no keys held: dash forward
+        dashTransform = transform;
+        dashInput = input;
+        if (dashInput.sqrMagnitude < 0.01f)
+            dashInput = Vector2.up;               // no keys held: dash forward
 
-        dashDirection = dir.normalized;
+        dashInput = dashInput.normalized;
         isDashing = true;
-        dashTravel = 0f;
         dashTimer = 0f;
         cooldownTimer = dashCooldown;
     }
@@ -128,33 +135,43 @@ public class PlayerControl : MonoBehaviour
         {
             dashTimer += Time.deltaTime;
 
-            float dashSpeed = dashDistance / dashDuration;
             float t = Mathf.Clamp01(dashTimer / dashDuration);
-            move = dashDirection * dashSpeed * (1.5f - t); 
+            dashVel.x += dashInput.x * dashAcceleration;
+            dashVel.z += dashInput.y * dashAcceleration;
 
             if (dashTimer >= dashDuration)
                 isDashing = false;
+        } else {
+            dashVel = dashVel * dashFriction;
         }
-        else
+
+        velocity.x += input.x * acceleration;
+        velocity.z += input.y * acceleration;
+        velocity *= friction;
+        velocity = Vector3.ClampMagnitude(velocity, maxMoveSpeed);
+
+        Vector3 deltaPosition = (velocity) * friction * Time.deltaTime;
+        deltaPosition = (transform.right * deltaPosition.x + transform.forward * deltaPosition.z);
+        Vector3 deltaPositionDash = (dashVel) * Time.deltaTime;
+        if (dashTransform != null)
         {
-            move = (transform.right * input.x + transform.forward * input.y) * moveSpeed;
+            deltaPositionDash = (dashTransform.right * deltaPositionDash.x + dashTransform.forward * deltaPositionDash.z);
         }
+        
+
+        move = deltaPosition + deltaPositionDash;
+
         if (controller.isGrounded && verticalVelocity < 0f)
-            verticalVelocity = -2f;
-        else
-            verticalVelocity -= gravity * Time.deltaTime;
-        move.y = verticalVelocity;
-
-        controller.Move(move * Time.deltaTime);
-
-        Vector3 displacement = transform.position - startPosition;
-        displacement.y = 0f;
-        WalkingDistanceThisFrame = walking ? displacement.magnitude : 0f;
-        if (!walking)
         {
-            dashTravel += displacement.magnitude;
-            if (!isDashing && dashTravel >= 0.1f)
-                DashCompleted?.Invoke();
+            verticalVelocity = -2f;
+            friction = groundFriction;
         }
+        else { 
+            verticalVelocity -= gravity * Time.deltaTime;
+            friction = 1f;
+        }
+        move.y = verticalVelocity * Time.deltaTime;
+
+        controller.Move(move);
     }
 }
