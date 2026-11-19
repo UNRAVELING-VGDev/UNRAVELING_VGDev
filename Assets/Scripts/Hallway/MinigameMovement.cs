@@ -13,6 +13,8 @@ public class MinigameMovement : MonoBehaviour
     private CharacterController _controller;
     private Vector3 _velocity;
 
+    public float WalkingDistanceThisFrame { get; private set; }
+
     void Start()
     {
         _controller = GetComponent<CharacterController>();
@@ -20,6 +22,7 @@ public class MinigameMovement : MonoBehaviour
 
     void Update()
     {
+        Vector3 startPosition = transform.position;
         float moveX = Input.GetAxis("Horizontal");
         float moveZ = Input.GetAxis("Vertical");
 
@@ -51,6 +54,10 @@ public class MinigameMovement : MonoBehaviour
                 _controller.Move(correction);
             }
         }
+
+        Vector3 displacement = transform.position - startPosition;
+        displacement.y = 0f;
+        WalkingDistanceThisFrame = Mathf.Min(displacement.magnitude, move.magnitude * moveSpeed * Time.deltaTime);
     }
 
     private void OnDrawGizmos()

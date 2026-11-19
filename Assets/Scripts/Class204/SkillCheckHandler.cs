@@ -56,6 +56,8 @@ public class SkillCheckHandler : MonoBehaviour
     [SerializeField] protected RectTransform backgroundRT;
     [SerializeField] protected RectTransform zoneRT;
     [SerializeField] protected RectTransform spinnerRT;
+    [SerializeField] protected RectTransform centerAnimRT;
+    [SerializeField] protected Animator centerAnimator;
     [SerializeField] protected float radiusOffSet;
     [SerializeField] private float startDelay = 2f;
     [SerializeField] private float hitLeniency = 3f;   // extra degrees of forgiveness on each side of the zone
@@ -123,13 +125,14 @@ public class SkillCheckHandler : MonoBehaviour
         rt = GetComponent<RectTransform>();
         mat = zoneRT.GetComponent<RawImage>().material;
 
-        if (rt == null || backgroundRT == null || zoneRT == null || spinnerRT == null) {
+        if (rt == null || backgroundRT == null || zoneRT == null || spinnerRT == null || centerAnimRT == null || centerAnimator == null) {
             return;
         }
 
         rt.anchoredPosition = canvasPosition;
         backgroundRT.anchoredPosition = Vector2.zero;
-        zoneRT.anchoredPosition = Vector2.zero;
+        zoneRT.anchoredPosition = new Vector2(0, 1.5f);
+        centerAnimRT.anchoredPosition = new Vector2(0, -8f);
 
         int textureID = Shader.PropertyToID("_imageTexture");
         mat.SetTexture(textureID, zoneRT.GetComponent<RawImage>().texture);
@@ -183,6 +186,7 @@ public class SkillCheckHandler : MonoBehaviour
         if (backgroundRT != null) backgroundRT.gameObject.SetActive(visible);
         if (zoneRT != null) zoneRT.gameObject.SetActive(visible);
         if (spinnerRT != null) spinnerRT.gameObject.SetActive(visible);
+        if (centerAnimRT != null) centerAnimRT.gameObject.SetActive(visible);
     }
 
     // loads the speed and zone size of the current tier

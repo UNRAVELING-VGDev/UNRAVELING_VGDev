@@ -15,6 +15,8 @@ public class HealingParticleManager : MonoBehaviour
     public float minSpawnDelay = 8f;
     public float maxSpawnDelay = 12f;
 
+    public event System.Action<HealingParticle> ParticleSpawned;
+
     void Start()
     {
         StartCoroutine(HealingLoop());
@@ -64,6 +66,7 @@ public class HealingParticleManager : MonoBehaviour
 
             HealingParticle healingParticleScript = newHealingParticle.GetComponent<HealingParticle>();
             healingParticleScript.SetTarget(target);
+            ParticleSpawned?.Invoke(healingParticleScript);
         }
     }
 }

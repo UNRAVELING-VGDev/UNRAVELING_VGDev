@@ -1,0 +1,443 @@
+fileFormatVersion: 2
+guid: 93f44169e319142b0b11582df97bc384
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 400
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: butterflySheet_1
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 2964
+        width: 655
+        height: 405
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1dcc156ef7e6544a19c99eccba0f4765
+      internalID: -2019069372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: butterflySheet_2
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 2542
+        width: 655
+        height: 406
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f529a73c449504f14a65cc097e6e5b32
+      internalID: -555965788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: butterflySheet_3
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 2122
+        width: 655
+        height: 405
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd362bbc107194f6d8637b443e38c507
+      internalID: -1488708500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: butterflySheet_4
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 1701
+        width: 655
+        height: 406
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc1d97333df0c46a4aaa143ef00406d7
+      internalID: -1801551445
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: butterflySheet_5
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 1281
+        width: 655
+        height: 405
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 603d5dec5d50348758b4f52e4dc75cad
+      internalID: -113788730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: butterflySheet_6
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 861
+        width: 655
+        height: 405
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a390d83309b24c1c8cf56fdb35b084e
+      internalID: -1894762508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: butterflySheet_7
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 439
+        width: 655
+        height: 405
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 812f1b33e6f054b5ea037bb161ae4494
+      internalID: 102936358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: butterflySheet_9
+      rect:
+        serializedVersion: 2
+        x: 780
+        y: 2964
+        width: 654
+        height: 405
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e18d5f2e5d69441bb9c2ebd5a7bce7c9
+      internalID: 833829702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: butterflySheet_10
+      rect:
+        serializedVersion: 2
+        x: 780
+        y: 2540
+        width: 654
+        height: 405
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad6cbeb7e8a2a43f0bf96349694ce68c
+      internalID: -633074118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: butterflySheet_11
+      rect:
+        serializedVersion: 2
+        x: 790
+        y: 2104
+        width: 654
+        height: 405
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e83b39cb900664808bf4ab74d6f08aab
+      internalID: -1470090398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: butterflySheet_12
+      rect:
+        serializedVersion: 2
+        x: 790
+        y: 1667
+        width: 654
+        height: 405
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c92a9670272b54be5b6bf628f5864ab9
+      internalID: 91707848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 920308504a02a4586ad56a6d7263ed63
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      butterflySheet_0: 1405478060
+      butterflySheet_1: -2019069372
+      butterflySheet_10: -633074118
+      butterflySheet_11: -1470090398
+      butterflySheet_12: 91707848
+      butterflySheet_13: 365913152
+      butterflySheet_14: 1443857761
+      butterflySheet_15: -627707001
+      butterflySheet_16: -1568951271
+      butterflySheet_17: -2064080991
+      butterflySheet_18: -1033824973
+      butterflySheet_19: -577996064
+      butterflySheet_2: -555965788
+      butterflySheet_20: -2001892990
+      butterflySheet_21: -956833212
+      butterflySheet_22: -734135903
+      butterflySheet_23: -750030762
+      butterflySheet_24: -975142684
+      butterflySheet_25: -1464329888
+      butterflySheet_26: -1701094779
+      butterflySheet_27: 1047036979
+      butterflySheet_28: -387734487
+      butterflySheet_29: -1568947695
+      butterflySheet_3: -1488708500
+      butterflySheet_30: -311948627
+      butterflySheet_31: -1657254762
+      butterflySheet_32: -1380587331
+      butterflySheet_33: -1114271160
+      butterflySheet_34: -961802509
+      butterflySheet_35: -21004696
+      butterflySheet_36: -723195065
+      butterflySheet_37: -2033765314
+      butterflySheet_38: -524673310
+      butterflySheet_39: 945296336
+      butterflySheet_4: -1801551445
+      butterflySheet_40: -709228303
+      butterflySheet_41: -87374934
+      butterflySheet_42: 1924715176
+      butterflySheet_43: -356027622
+      butterflySheet_44: -801621072
+      butterflySheet_45: 1500116600
+      butterflySheet_46: 642467049
+      butterflySheet_47: 34168149
+      butterflySheet_48: -940910082
+      butterflySheet_49: -1844700975
+      butterflySheet_5: -113788730
+      butterflySheet_50: 1477240027
+      butterflySheet_51: -2027101655
+      butterflySheet_52: -1582934319
+      butterflySheet_53: -359534631
+      butterflySheet_54: -1449328585
+      butterflySheet_55: 2025819361
+      butterflySheet_56: -257365835
+      butterflySheet_57: 167867013
+      butterflySheet_58: 504457262
+      butterflySheet_59: -518362583
+      butterflySheet_6: -1894762508
+      butterflySheet_60: 649801942
+      butterflySheet_61: -1147772247
+      butterflySheet_62: 377084000
+      butterflySheet_63: -921545692
+      butterflySheet_64: -1943533391
+      butterflySheet_65: 517098294
+      butterflySheet_66: -1448597720
+      butterflySheet_67: 2095819257
+      butterflySheet_68: 594350361
+      butterflySheet_69: 1145477489
+      butterflySheet_7: 102936358
+      butterflySheet_70: -1435088175
+      butterflySheet_71: -1386474933
+      butterflySheet_72: -2146180352
+      butterflySheet_73: 363495692
+      butterflySheet_74: 562773936
+      butterflySheet_75: 524804021
+      butterflySheet_76: 941610755
+      butterflySheet_77: -281970480
+      butterflySheet_78: 740275159
+      butterflySheet_79: -1222998137
+      butterflySheet_8: 1600545010
+      butterflySheet_80: -1967161838
+      butterflySheet_81: -559921564
+      butterflySheet_9: 833829702
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
