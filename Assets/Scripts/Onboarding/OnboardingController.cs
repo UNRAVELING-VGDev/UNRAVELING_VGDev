@@ -29,7 +29,7 @@ public class OnboardingController : MonoBehaviour
         new LessonSettings(OnboardingLesson.SkillCheck, "Press Space when the marker reaches the highlighted zone.", 100),
         new LessonSettings(OnboardingLesson.Duck, "Press Shift to duck.", 9),
         new LessonSettings(OnboardingLesson.Dash, "Press Space to dash.", 8),
-        new LessonSettings(OnboardingLesson.Flashlight, "Hold left-click to charge and fire the flashlight beam.", 7)
+        new LessonSettings(OnboardingLesson.Flashlight, "Hold left-click to fire the laser. Release to stop.", 7)
     };
 
     readonly HashSet<OnboardingLesson> _relevant = new HashSet<OnboardingLesson>();

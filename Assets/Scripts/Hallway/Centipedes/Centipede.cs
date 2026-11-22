@@ -3,6 +3,12 @@ using UnityEngine.Pool;
 
 public class Centipede : MonoBehaviour
 {
+  [Header("Health")]
+  [Min(1f)] [SerializeField] private float _maxHealth = 5f;
+  [Min(0f)] [SerializeField] private float _paranoiaPerHit = 5f;
+
+  public float Health { get; private set; }
+
   private enum CentipedeState
   {
     Crawl,
@@ -132,6 +138,7 @@ public class Centipede : MonoBehaviour
   private Vector3 _playerVelocity;
   private Vector3 _lastPlayerPos;
   private bool _hasLastPlayerPos;
+  private Collider[] _hitColliders;
 
   public void SetPool(IObjectPool<Centipede> owningPool) => _pool = owningPool;
 
@@ -145,6 +152,12 @@ public class Centipede : MonoBehaviour
     _playerTarget = target;
     _state = CentipedeState.Crawl;
     _released = false;
+    Health = _maxHealth;
+    foreach (Collider hitCollider in _hitColliders)
+    {
+      hitCollider.isTrigger = true;
+      hitCollider.enabled = true;
+    }
 
     _wanderSeed = Random.Range(0f, 100f);
     _lifetime = 0f;
@@ -196,6 +209,8 @@ public class Centipede : MonoBehaviour
 
   private void Awake()
   {
+    Health = _maxHealth;
+    _hitColliders = GetComponentsInChildren<Collider>(true);
     int segmentCount = _segments != null ? _segments.Length : 0;
     float bodyLength = (segmentCount + 1) * _segmentSpacing;
     int capacity = Mathf.CeilToInt(bodyLength / _sampleSpacing) + 4;
@@ -260,7 +275,7 @@ public class Centipede : MonoBehaviour
 
     // Concave corner or bump: a surface directly ahead (floor meeting a wall)
     Vector3 lowOrigin = _headPos + up * (_probeHeight * 0.5f);
-    if (Physics.Raycast(lowOrigin, fwd, out hit, step + _probeHeight * 0.5f, _surfaceMask))
+    if (Physics.Raycast(lowOrigin, fwd, out hit, step + _probeHeight * 0.5f, _surfaceMask, QueryTriggerInteraction.Ignore))
     {
       SetSurface(hit.point, hit.normal);
       return true;
@@ -274,7 +289,8 @@ public class Centipede : MonoBehaviour
         -up,
         out hit,
         _probeHeight + _probeDepth,
-        _surfaceMask
+        _surfaceMask,
+        QueryTriggerInteraction.Ignore
       )
     )
     {
@@ -284,7 +300,7 @@ public class Centipede : MonoBehaviour
 
     // Convex edge: the surface dropped away, so look back underneath the edge
     Vector3 under = ahead - up * _probeDepth;
-    if (Physics.Raycast(under, -fwd, out hit, step + _probeDepth, _surfaceMask))
+    if (Physics.Raycast(under, -fwd, out hit, step + _probeDepth, _surfaceMask, QueryTriggerInteraction.Ignore))
     {
       SetSurface(hit.point, hit.normal);
       return true;
@@ -514,12 +530,16 @@ public class Centipede : MonoBehaviour
     if ((_playerTarget.position - next).sqrMagnitude <= _hitRadius * _hitRadius)
     {
       Debug.Log($"{name} hit the player");
+      ParanoiaMeter paranoia = _playerTarget.GetComponentInParent<ParanoiaMeter>();
+      PlayerControl movement = _playerTarget.GetComponentInParent<PlayerControl>();
+      if (paranoia != null && (movement == null || !movement.IsInvulnerable))
+        paranoia.Add(_paranoiaPerHit, true);
       Despawn();
       return;
     }
 
     Vector3 move = next - prev;
-    if (Physics.Raycast(prev, move.normalized, out RaycastHit hit, move.magnitude, _surfaceMask))
+    if (Physics.Raycast(prev, move.normalized, out RaycastHit hit, move.magnitude, _surfaceMask, QueryTriggerInteraction.Ignore))
     {
       Debug.Log($"{name} missed and landed");
       _headForward = _leapVelocity;
@@ -554,6 +574,17 @@ public class Centipede : MonoBehaviour
   private Vector3 PredictPlayerPosition(float time)
   {
     return _playerTarget.position + _playerVelocity * (time * _leadAmount);
+  }
+
+  public void OnHit(float damage)
+  {
+    if (_released || !isActiveAndEnabled || Health <= 0f || damage <= 0f
+      || float.IsNaN(damage) || float.IsInfinity(damage))
+      return;
+
+    Health = Mathf.Max(0f, Health - damage);
+    if (Health <= 0f)
+      Despawn();
   }
 
   private void Despawn()

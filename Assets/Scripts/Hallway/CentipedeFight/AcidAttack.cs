@@ -13,12 +13,14 @@ public class AcidAttack : CentipedeAttack
     [SerializeField] Transform _sixthSegment;
     [SerializeField] Transform _mouth;
     [SerializeField] Transform _player;
+    [SerializeField] CentipedeManager _centipedeManager;
+    [Min(0.5f)] [SerializeField] float _spawnSideOffset = 3f;
 
     [Header("Timing")]
-    [SerializeField] float _windupDuration = 0.55f;
-    [SerializeField] float _holdDuration = 0.22f;
-    [SerializeField] float _spitDuration = 0.36f;
-    [SerializeField] float _recoverDuration = 0.5f;
+    [SerializeField] float _windupDuration = 0.4f;
+    [SerializeField] float _holdDuration = 0.15f;
+    [SerializeField] float _spitDuration = 0.25f;
+    [SerializeField] float _recoverDuration = 0.35f;
 
     [Header("Coil")]
     [SerializeField] float _bodyPullback = 2f;
@@ -50,12 +52,13 @@ public class AcidAttack : CentipedeAttack
     [SerializeField] float _spitPitch = 42f;
 
     [Header("Shot")]
-    [SerializeField] float _shotVelocity = 28f;
+    [SerializeField] float _shotVelocity = 60f;
     [SerializeField] float _ballSize = 0.55f;
 
     [Header("Puddle")]
     [SerializeField] float _puddleDuration = 6f;
     [SerializeField] float _puddleRadius = 1.7f;
+    [Min(0f)] [SerializeField] float _puddleParanoiaPerSecond = 10f;
 
     Quaternion _headBaseRot;
     Quaternion _frontBaseRot;
@@ -219,11 +222,14 @@ public class AcidAttack : CentipedeAttack
         }
 
         if (IsPlaying)
-            transform.position = _positionAtStart - transform.forward * (_bodyPullback * coil);
+            MoveBoss(_positionAtStart - transform.forward * (_bodyPullback * coil));
     }
 
     void Launch()
     {
+        if (_centipedeManager != null)
+            _centipedeManager.SpawnBesideBoss(transform, _spawnSideOffset);
+
         Vector3 start = _mouth.position;
         Vector3 end = _player.position;
         end.y = 0.03f;
@@ -232,12 +238,10 @@ public class AcidAttack : CentipedeAttack
         Vector3 direction = distance > 0.001f ? toEnd / distance : transform.forward;
 
         GameObject ball = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        RemoveCollider(ball);
         ball.name = "AcidBall";
         ball.transform.position = start;
         ball.transform.localScale = Vector3.one * _ballSize;
-        Collider ballCollider = ball.GetComponent<Collider>();
-        if (ballCollider != null)
-            ballCollider.isTrigger = true;
         Paint(ball);
         _spawned.Add(ball);
         StartCoroutine(Fly(ball, start, direction, distance, end));
@@ -251,11 +255,12 @@ public class AcidAttack : CentipedeAttack
         float speed = Mathf.Max(0.01f, _shotVelocity);
         while (traveled < distance && ball != null)
         {
+            Vector3 previous = start + direction * traveled;
             traveled = Mathf.Min(distance, traveled + speed * Time.deltaTime);
             Vector3 pos = start + direction * traveled;
             ball.transform.position = pos;
 
-            if (!logged && OverlapsPlayer(pos, radius))
+            if (!logged && HitsPlayer(previous, pos, radius))
             {
                 logged = true;
                 Debug.Log("Acid hit");
@@ -273,12 +278,10 @@ public class AcidAttack : CentipedeAttack
     void SpawnPuddle(Vector3 point)
     {
         GameObject puddle = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        RemoveCollider(puddle);
         puddle.name = "AcidPuddle";
         puddle.transform.position = point;
         puddle.transform.localScale = new Vector3(_puddleRadius * 2f, 0.03f, _puddleRadius * 2f);
-        Collider puddleCollider = puddle.GetComponent<Collider>();
-        if (puddleCollider != null)
-            puddleCollider.isTrigger = true;
         Paint(puddle);
         _spawned.Add(puddle);
         StartCoroutine(PuddleLife(puddle));
@@ -287,22 +290,28 @@ public class AcidAttack : CentipedeAttack
     IEnumerator PuddleLife(GameObject puddle)
     {
         float elapsed = 0f;
-        bool logged = false;
         Vector3 halfExtents = new Vector3(_puddleRadius, 0.6f, _puddleRadius);
         while (elapsed < _puddleDuration && puddle != null)
         {
-            elapsed += Time.deltaTime;
-            if (!logged && OverlapsPlayer(puddle.transform.position, halfExtents))
-            {
-                logged = true;
-                Debug.Log("Acid puddle");
-            }
+            float step = Mathf.Min(Time.deltaTime, _puddleDuration - elapsed);
+            elapsed += step;
+            ApplyPuddleDamage(puddle.transform.position, halfExtents, _puddleParanoiaPerSecond * step);
 
             yield return null;
         }
 
         if (puddle != null)
             Retire(puddle);
+    }
+
+    void RemoveCollider(GameObject visual)
+    {
+        Collider visualCollider = visual.GetComponent<Collider>();
+        if (visualCollider == null)
+            return;
+
+        visualCollider.enabled = false;
+        Destroy(visualCollider);
     }
 
     void Retire(GameObject spawned)
@@ -342,28 +351,52 @@ public class AcidAttack : CentipedeAttack
         return _acidMaterial;
     }
 
-    static bool OverlapsPlayer(Vector3 center, float radius)
+    bool HitsPlayer(Vector3 from, Vector3 to, float radius)
     {
-        Collider[] hits = Physics.OverlapSphere(center, radius);
+        Collider[] hits = Physics.OverlapSphere(to, radius);
         foreach (Collider hit in hits)
         {
             if (hit.CompareTag("Player"))
+            {
+                ReportPlayerHit(hit);
                 return true;
+            }
+        }
+
+        Vector3 move = to - from;
+        if (move.sqrMagnitude <= 0.000001f)
+            return false;
+
+        foreach (RaycastHit hit in Physics.SphereCastAll(from, radius, move.normalized,
+            move.magnitude, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
+        {
+            if (hit.collider.CompareTag("Player"))
+            {
+                ReportPlayerHit(hit.collider);
+                return true;
+            }
         }
 
         return false;
     }
 
-    static bool OverlapsPlayer(Vector3 center, Vector3 halfExtents)
+    void ApplyPuddleDamage(Vector3 center, Vector3 halfExtents, float amount)
     {
         Collider[] hits = Physics.OverlapBox(center, halfExtents);
         foreach (Collider hit in hits)
         {
             if (hit.CompareTag("Player"))
-                return true;
-        }
+            {
+                Vector3 closest = hit.ClosestPoint(center);
+                Vector3 horizontal = closest - center;
+                horizontal.y = 0f;
+                if (horizontal.sqrMagnitude > _puddleRadius * _puddleRadius)
+                    continue;
 
-        return false;
+                ReportPlayerHit(hit, amount);
+                return;
+            }
+        }
     }
 
     static void PoseSegment(Transform segment, Vector3 basePos, Quaternion baseRot, float back, float lift, float pitch, float amount)

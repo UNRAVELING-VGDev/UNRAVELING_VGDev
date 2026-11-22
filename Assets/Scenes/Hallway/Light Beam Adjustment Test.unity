@@ -1382,14 +1382,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   defaultSpotAngle: 50
   minIntensity: 10
-  maxIntensity: 50
-  timeToBeam: 0.25
-  timeToFlashlight: 0.1
   beamMaterial: {fileID: 6360985775075344582, guid: 3df6b2c3ba42b4c248f1f6fa5173096c, type: 3}
   lightSource: {fileID: 1819583874}
   beamThickness: 0.2
-  cooldown: 3
   maxDistance: 30
+  damageInterval: 0.1
+  maxReflections: 1
 --- !u!1 &780000000
 GameObject:
   m_ObjectHideFlags: 0
