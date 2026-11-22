@@ -13,10 +13,11 @@ public class WhipAttack : CentipedeAttack
     [SerializeField] Transform _tail;
 
     [Header("Timing")]
-    [SerializeField] float _coilDuration = 0.7f;
-    [SerializeField] float _holdDuration = 0.18f;
-    [SerializeField] float _whipDuration = 2.8f;
-    [SerializeField] float _recoverDuration = 0.55f;
+    [SerializeField] float _coilDuration = 0.8f;
+    [Min(0f)] [SerializeField] float _followupCoilDuration = 0.15f;
+    [SerializeField] float _holdDuration = 0.15f;
+    [SerializeField] float _whipDuration = 0.45f;
+    [SerializeField] float _recoverDuration = 0.2f;
 
     [Header("Plant")]
     [SerializeField] float _headDrop = 0.55f;
@@ -47,6 +48,16 @@ public class WhipAttack : CentipedeAttack
     Vector3 _restPivot;
     float _innerRadius;
     float _clearRadius;
+    bool _followup;
+
+    public void PlayFollowup()
+    {
+        if (IsPlaying || !isActiveAndEnabled)
+            return;
+
+        _followup = true;
+        Play();
+    }
 
     void Awake()
     {
@@ -100,7 +111,9 @@ public class WhipAttack : CentipedeAttack
 
     protected override IEnumerator Perform()
     {
-        yield return Blend(0f, 1f, 0f, _coilAngle, 0f, _coilCurl, 0f, _coilLift, _coilDuration);
+        float coilDuration = _followup ? _followupCoilDuration : _coilDuration;
+        _followup = false;
+        yield return Blend(0f, 1f, 0f, _coilAngle, 0f, _coilCurl, 0f, _coilLift, coilDuration);
         Apply(1f, _coilAngle, _coilCurl, _coilLift);
 
         // Keep turning past the coil until the body is back on its original line.
@@ -143,6 +156,7 @@ public class WhipAttack : CentipedeAttack
     {
         StopAllCoroutines();
         MarkStopped();
+        _followup = false;
         Apply(0f, 0f, 0f, 0f);
     }
 
@@ -290,7 +304,10 @@ public class WhipAttack : CentipedeAttack
             foreach (Collider hit in hits)
             {
                 if (hit.CompareTag("Player"))
+                {
+                    ReportPlayerHit(hit);
                     return true;
+                }
             }
         }
 

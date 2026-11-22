@@ -390,6 +390,7 @@ MonoBehaviour:
   _attackCooldown: 2
   _maxLeapTime: 2
   _maxLifetime: 30
+  _maxHealth: 5
 --- !u!1 &5671203866143869994
 GameObject:
   m_ObjectHideFlags: 0

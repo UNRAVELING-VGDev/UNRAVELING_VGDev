@@ -16,7 +16,7 @@ public class PullbackAttack : CentipedeAttack
     [Header("Timing")]
     [SerializeField] float _windupDuration = 0.5f;
     [SerializeField] float _holdDuration = 0.28f;
-    [SerializeField] float _launchDuration = 0.6f;
+    [SerializeField] float _launchDuration = 0.4f;
 
     [Header("Lurch")]
     [SerializeField] float _bodyPullback = 2.2f;
@@ -43,7 +43,7 @@ public class PullbackAttack : CentipedeAttack
     [SerializeField] float _sixthLift = 2.1f;
 
     [Header("Launch")]
-    [SerializeField] float _stopDistance = 4.5f;
+    [SerializeField] float _stopDistance = 2f;
 
     [Header("Hit")]
     [SerializeField] float _hitReach = 1.8f;
@@ -125,6 +125,11 @@ public class PullbackAttack : CentipedeAttack
 
     protected override IEnumerator Perform()
     {
+        Vector3 toPlayer = _player.position - transform.position;
+        toPlayer.y = 0f;
+        if (toPlayer.sqrMagnitude > 0.000001f)
+            transform.rotation = Quaternion.LookRotation(toPlayer, Vector3.up);
+
         _positionAtStart = transform.position;
 
         yield return Lurch(0f, 1f, _windupDuration);
@@ -143,7 +148,7 @@ public class PullbackAttack : CentipedeAttack
             float t = Mathf.Clamp01(elapsed / _launchDuration);
             // Fast out of the coil, then a heavier arrival.
             float travel = 1f - Mathf.Pow(1f - t, 3f);
-            transform.position = Vector3.Lerp(launchStart, destination, travel);
+            MoveBoss(Vector3.Lerp(launchStart, destination, travel));
 
             float coil = Mathf.Clamp01(1f - (t / 0.45f));
             ApplyCoil(coil);
@@ -158,7 +163,7 @@ public class PullbackAttack : CentipedeAttack
             yield return null;
         }
 
-        transform.position = destination;
+        MoveBoss(destination);
         ApplyCoil(0f);
         _hitVolume.SetActive(false);
     }
@@ -200,7 +205,7 @@ public class PullbackAttack : CentipedeAttack
     void ApplyLurch(float amount)
     {
         ApplyCoil(amount);
-        transform.position = _positionAtStart - transform.forward * (_bodyPullback * amount);
+        MoveBoss(_positionAtStart - transform.forward * (_bodyPullback * amount));
     }
 
     void ApplyCoil(float amount)
@@ -251,7 +256,10 @@ public class PullbackAttack : CentipedeAttack
         foreach (Collider hit in hits)
         {
             if (hit.CompareTag("Player"))
+            {
+                ReportPlayerHit(hit);
                 return true;
+            }
         }
 
         return false;

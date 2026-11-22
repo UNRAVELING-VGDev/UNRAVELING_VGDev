@@ -19,6 +19,9 @@ public class CentipedeManager : MonoBehaviour
 
   [Header("Spawning")]
   [SerializeField]
+  private bool _automaticSpawning = true;
+
+  [SerializeField]
   private float _spawnInterval = 3f;
 
   [Tooltip("Don't spawn closer than this to the player.")]
@@ -62,12 +65,50 @@ public class CentipedeManager : MonoBehaviour
 
   private void Update()
   {
+    if (!_automaticSpawning)
+      return;
+
     _spawnTimer -= Time.deltaTime;
     if (_spawnTimer <= 0f)
     {
       _spawnTimer = _spawnInterval;
       SpawnCentipede();
     }
+  }
+
+  public void SpawnBesideBoss(Transform boss, float sideOffset)
+  {
+    if (boss == null || _centipedePrefab == null || _playerTarget == null)
+      return;
+
+    SpawnAtSide(boss, -Mathf.Max(0.5f, sideOffset));
+    SpawnAtSide(boss, Mathf.Max(0.5f, sideOffset));
+  }
+
+  private void SpawnAtSide(Transform boss, float signedOffset)
+  {
+    Vector3 origin = boss.position + boss.right * signedOffset + Vector3.up * 3f;
+    RaycastHit[] hits = Physics.RaycastAll(origin, Vector3.down, 12f, _surfaceMask,
+      QueryTriggerInteraction.Ignore);
+    int nearest = -1;
+    for (int i = 0; i < hits.Length; i++)
+    {
+      Collider surface = hits[i].collider;
+      if (hits[i].normal.y < 0.5f || surface.GetComponentInParent<CentipedeBoss>() != null
+        || surface.GetComponentInParent<Centipede>() != null
+        || surface.GetComponentInParent<CharacterController>() != null)
+        continue;
+
+      if (nearest < 0 || hits[i].distance < hits[nearest].distance)
+        nearest = i;
+    }
+
+    if (nearest < 0)
+      return;
+
+    RaycastHit hit = hits[nearest];
+    Centipede centipede = _pool.Get();
+    centipede.Init(_playerTarget, hit.point, hit.normal, _playerTarget.position - hit.point);
   }
 
   private void SpawnCentipede()

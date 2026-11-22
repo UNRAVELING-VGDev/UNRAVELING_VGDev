@@ -33,6 +33,7 @@ public class PlayerControl : MonoBehaviour
 
     // other scripts can check these!!!! 
     public bool IsDashing => isDashing;
+    public bool IsInvulnerable => isActiveAndEnabled && isDashing;
     public bool CanDash => !isDashing && cooldownTimer <= 0f && controller.isGrounded;
     public float WalkingDistanceThisFrame { get; private set; }
 
@@ -57,6 +58,7 @@ public class PlayerControl : MonoBehaviour
 
     void OnDisable()
     {
+        isDashing = false;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
